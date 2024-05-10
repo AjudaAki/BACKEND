@@ -14,13 +14,13 @@ const deleteTag = async (request, response) => {
     const { id_tag } = request.params;
     await tagsModel.deleteTag(id_tag);
     return response.status(204).json()
-}
+};
 
 const updateTag = async (request, response) => {
     const { id_tag } = request.params;
     await tagsModel.updateTag(id_tag, request.body);
     return response.status(204).json();
-}
+};
 
 module.exports = {
     getAll,
