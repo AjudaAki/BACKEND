@@ -6,11 +6,11 @@ const getAll = async() => {
 };
 
 const createHorario = async(horario) => {
-    const { hora_inicio, hora_fim, dia_semana } = horario;
+    const { id_usuario, hora_inicio, hora_fim, dia_semana } = horario;
 
-    const query = "INSERT INTO HORARIOS (hora_inicio, hora_fim, dia_semana) VALUES (?, ?, ?)";
+    const query = "INSERT INTO HORARIOS (id_usuario, hora_inicio, hora_fim, dia_semana) VALUES (?, ?, ?, ?)";
 
-    const [createdHorario] = await connection.execute(query, [hora_inicio, hora_fim, dia_semana]);
+    const [createdHorario] = await connection.execute(query, [id_usuario, hora_inicio, hora_fim, dia_semana]);
     return {insertId: createdHorario.insertId};
 };
 

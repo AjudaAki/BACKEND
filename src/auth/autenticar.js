@@ -9,7 +9,7 @@ const autenticar = async (request, response) => {
         // Verificar se o e-mail existe no banco de dados
         const [user] = await connection.execute('SELECT * FROM USUARIOS WHERE email = ?', [email]);
         if (user.length === 0) {
-            return response.status(401).json({ message: 'Credenciais inválidas' });
+            return response.status(401).json({ message: 'Email não cadastrado' });
         };
         
         // Verificar a senha

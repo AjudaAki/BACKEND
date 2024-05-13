@@ -1,3 +1,15 @@
+const connection = require('../models/connection');
+
+const validateUsuario = (request, response, next) => {
+    const { body } = request;
+
+    if (typeof body.id_usuario !== 'number' || isNaN(body.id_usuario)) {
+        return response.status(400).json({ message: "É necessário atribuir um usuário a esse horário" });
+    }
+
+    next();
+};
+
 const validateHoraInicio = (request, response, next) => {
     const { body } = request;
 
@@ -39,11 +51,19 @@ const validateDiaSemana = (request, response, next) => {
     next();
 };
 
-const horarioEmUso = (request, response, next) => {
-    //verificar se o horário está em uso ao tentar deletar
+const horarioEmUso = async (request, response, next) => {
+    const { id_usuario, dia_semana } = request.body;
+
+    const [horario] = await connection.execute('SELECT * FROM HORARIOS WHERE id_usuario = ? AND dia_semana = ?', [id_usuario, dia_semana]);
+    if (horario.length > 0) {
+        return response.status(401).json({ message: 'Esse dia já está em uso' });
+    }
+        
+    next();
 };
 
 module.exports = {
+    validateUsuario,
     validateHoraInicio,
     validateHoraTermino,
     validateDiaSemana,
