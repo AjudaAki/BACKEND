@@ -7,22 +7,22 @@ const userController = require('./controllers/userController');
 const tagsController = require('./controllers/tagsController');
 const horariosController = require('./controllers/horariosController');
 const tagsProfController = require('./controllers/tagsProfController');
-const avaliacaoController = require('./controllers/avaliacaoController');
-const localizacaoController = require('./controllers/localizacaoController');
-const precoController = require('./controllers/precoController');
-const comentarioController = require('./controllers/comentarioController');
-const favoritoController = require('./controllers/favoritoController');
+// const avaliacaoController = require('./controllers/avaliacaoController');
+// const localizacaoController = require('./controllers/localizacaoController');
+// const precoController = require('./controllers/precoController');
+// const comentarioController = require('./controllers/comentarioController');
+// const favoritoController = require('./controllers/favoritoController');
 
 //Middlewares
 const userMiddleware = require('./middlewares/userMiddleware');
 const tagsMiddleware = require('./middlewares/tagsMiddleware');
 const horariosMiddleware = require('./middlewares/horariosMiddleware');
 const tagsProfMiddleware = require('./middlewares/tagsProfMiddleware');
-const avaliacaoMiddleware = require('./middlewares/avaliacaoMiddleware'); 
-const favoritoMiddleware = require('./middlewares/favoritoMiddleware');
-const comentarioMiddleware = require('./middlewares/comentarioMiddleware');
-const precoMiddleware = require('./middlewares/precoMiddleware');
-const localizacaoMiddleware = require('./middlewares/localizacaoMiddleware');
+// const avaliacaoMiddleware = require('./middlewares/avaliacaoMiddleware'); 
+// const favoritoMiddleware = require('./middlewares/favoritoMiddleware');
+// const comentarioMiddleware = require('./middlewares/comentarioMiddleware');
+// const precoMiddleware = require('./middlewares/precoMiddleware');
+// const localizacaoMiddleware = require('./middlewares/localizacaoMiddleware');
 
 //Login
 const autenticarAuth = require('./auth/autenticar');
@@ -76,33 +76,53 @@ router.delete('/horarios/:id_horario', horariosController.deleteHorario);
 router.put('/horarios/:id_horario', horariosController.updateHorario);
 
 //Avaliação
-router.get('/avaliacao', avaliacaoController.getAll);
-router.post('/avaliacao', avaliacaoMiddleware.validateAvaliacao, avaliacaoController.createAvaliacao);
-router.delete('/avaliacao/:id_avaliacao_professor', avaliacaoController.deleteAvaliacao);
-router.put('/avaliacao/:id_avaliacao_professor',  avaliacaoMiddleware.validateAvaliacao,avaliacaoController.updateAvaliacao);
+// router.get('/avaliacao', avaliacaoController.getAll);
+// router.post('/avaliacao', avaliacaoMiddleware.validateAvaliacao, avaliacaoController.createAvaliacao);
+// router.delete('/avaliacao/:id_avaliacao_professor', avaliacaoController.deleteAvaliacao);
+// router.put('/avaliacao/:id_avaliacao_professor',  avaliacaoMiddleware.validateAvaliacao,avaliacaoController.updateAvaliacao);
 
-//Favorito
-router.get('/favorito', favoritoController.getAll);
-router.post('/favorito', favoritoMiddleware.validateFavorito,favoritoController.createFavorito);
-router.delete('/favorito/:usuario_logado/:usuario_relacionado', favoritoController.deleteFavorito);
+// //Favorito
+// router.get('/favorito', favoritoController.getAll);
+// router.post('/favorito', favoritoMiddleware.validateFavorito,favoritoController.createFavorito);
+// router.delete('/favorito/:usuario_logado/:usuario_relacionado', favoritoController.deleteFavorito);
 
-//Comentario
-router.get('/comentario', comentarioController.getAll);
-router.post('/comentario', comentarioMiddleware.validateComentario, comentarioMiddleware.validateCaracter, comentarioController.createComentario, );
-router.delete('/comentario/:id_comentario', comentarioController.deleteComentario);
-router.put('/comentario/:id_comentario', comentarioMiddleware.validateComentario, comentarioMiddleware.validateCaracter,comentarioController.updateComentario);
+// //Comentario
+// router.get('/comentario', comentarioController.getAll);
+// router.post('/comentario', 
+//     comentarioMiddleware.validateComentario, 
+//     comentarioMiddleware.validateCaracter, 
+//     comentarioController.createComentario, );
+// router.delete('/comentario/:id_comentario', comentarioController.deleteComentario);
+// router.put('/comentario/:id_comentario', 
+//     comentarioMiddleware.validateComentario, 
+//     comentarioMiddleware.validateCaracter,
+//     comentarioController.updateComentario);
 
-//Preço
-router.get('/preco', precoController.getAll);
-router.post('/preco', precoMiddleware.validateExiste, precoMiddleware.validatePrecoMin,precoMiddleware.validatePrecoMax,precoController.createPreco);
-router.delete('/preco/:id_preco_professor', precoController.deletePreco);
-router.put('/preco/:id_preco_professor', precoMiddleware.validateExiste, precoMiddleware.validatePrecoMin, precoMiddleware.validatePrecoMax,precoController.updatePreco);
+// //Preço
+// router.get('/preco', precoController.getAll);
+// router.post('/preco', 
+//     precoMiddleware.validateExiste, 
+//     precoMiddleware.validatePrecoMin,
+//     precoMiddleware.validatePrecoMax,
+//     precoController.createPreco);
+// router.delete('/preco/:id_preco_professor', precoController.deletePreco);
+// router.put('/preco/:id_preco_professor', 
+//     precoMiddleware.validateExiste, 
+//     precoMiddleware.validatePrecoMin, 
+//     precoMiddleware.validatePrecoMax,
+//     precoController.updatePreco);
 
-//Localização
-router.get('/localizacao' ,localizacaoController.getAll);
-router.post('/localizacao', localizacaoMiddleware.validateEstado, localizacaoMiddleware.validateCidade, localizacaoMiddleware.validateBairro, localizacaoMiddleware.validateRua, localizacaoMiddleware.validateNum,localizacaoController.createLocalizacao);
-router.delete('/localizacao/:id_usuario', localizacaoController.deleteLocalizacao);
-router.put('/localizacao/:id_usuario', localizacaoMiddleware.validateEstado,localizacaoController.updateLocalizacao);
+// //Localização
+// router.get('/localizacao' ,localizacaoController.getAll);
+// router.post('/localizacao', 
+//     localizacaoMiddleware.validateEstado, 
+//     localizacaoMiddleware.validateCidade, 
+//     localizacaoMiddleware.validateBairro, 
+//     localizacaoMiddleware.validateRua, 
+//     localizacaoMiddleware.validateNum,
+//     localizacaoController.createLocalizacao);
+// router.delete('/localizacao/:id_usuario', localizacaoController.deleteLocalizacao);
+// router.put('/localizacao/:id_usuario', localizacaoMiddleware.validateEstado,localizacaoController.updateLocalizacao);
 
 //Login
 router.post('/login', autenticarAuth.autenticar);
