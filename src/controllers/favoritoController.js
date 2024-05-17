@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const favoritoModel = require('../models/favoritoModel')
+const favoritoModel = require('../repositorys/favoritoModel')
 
 const getAll = async (request, response) => {
     const favoritos = await favoritoModel.getAll();

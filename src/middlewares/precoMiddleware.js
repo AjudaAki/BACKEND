@@ -1,4 +1,4 @@
-const connection = require('../models/connection');
+const connection = require('../repositorys/connection');
 
 const { response } = require("express");
 
@@ -22,7 +22,7 @@ const validatePrecoMin = (request, response, next) => {
     if (preco_minimo.trim() === '') {
         return response.status(400).json({ message: 'O campo não pode ser vazio' });
     }
-    if (preco_minimo.length > 200) {
+    if (preco_minimo.length > 8) {
         return response.status(404).json({ message: 'Número de caracteres acima do permitido no campo "preço mínimo".' });
     }
     next();
@@ -34,19 +34,18 @@ const validatePrecoMax = (request, response, next) => {
     if (preco_maximo.trim() === '') {
         return response.status(400).json({ message: 'O campo não pode ser vazio' });
     }
-    if (preco_maximo.length > 200) {
+    if (preco_maximo.length > 8) {
         return response.status(404).json({ message: 'Número de caracteres acima do permitido no campo "preço máximo".' });
     }
     
     next();
 };
 
-    
 module.exports = {
     validateExiste,
     validatePrecoMin,
     validatePrecoMax,
-}
+};
 
 
 

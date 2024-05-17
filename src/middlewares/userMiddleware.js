@@ -1,10 +1,14 @@
-const connection = require('../models/connection');
+const connection = require('../repositorys/connection');
 
 const validateName = (request, response, next) => {
     const { nome } = request.body;
 
     if (typeof nome !== 'string' || nome.trim() === '') {
         return response.status(400).json({ message: "O campo nome é necessário" });
+    }
+
+    if (nome.length > 255) {
+        return response.status(404).json({ message: 'Número de caracteres acima do permitido no campo "Nome".' });
     }
 
     next();
@@ -15,6 +19,10 @@ const validateEmail = async (request, response, next) => {
 
     if (typeof email !== 'string' || email.trim() === '') {
         return response.status(400).json({ message: "O campo email é necessário" });
+    }
+
+    if (email.length > 255) {
+        return response.status(404).json({ message: 'Número de caracteres acima do permitido no campo "email".' });
     }
 
     try {
@@ -44,6 +52,10 @@ const validatePassword = (request, response, next) => {
         return response.status(400).json({ message: "A senha deve ter pelo menos 8 caracteres" });
     };
 
+    if (senha.length > 255) {
+        return response.status(404).json({ message: 'Número de caracteres acima do permitido no campo "senha".' });
+    }
+
     next();
 };
 
@@ -58,6 +70,10 @@ const validateTelefone = (request, response, next) => {
         return response.status(400).json({ message: "O telefone deve ter pelo menos 10 caracteres" });
     };
 
+    if (telefone.length > 15){
+        return response.status(400).json({ message: 'Número de caracteres acima do permitido no campo "senha".' });
+    }
+
     next();
 };
 
@@ -68,9 +84,13 @@ const validateCpf = (request, response, next) => {
         return response.status(400).json({ message: "O campo CPF é necessário" });
     }
         
-    if (cpf.length < 8){
+    if (cpf.length < 10){
         return response.status(400).json({ message: "O CPF deve ter pelo menos 10 caracteres" });
     };
+
+    if (cpf.length > 15){
+        return response.status(400).json({ message: 'Número de caracteres acima do permitido no campo "cpf".' });
+    }
 
     next();
 };
@@ -92,6 +112,10 @@ const validateDescricao = (request, response, next) => {
         return response.status(400).json({ message: "O campo descrição é necessário" });
     }
 
+    if (descricao.length > 700){
+        return response.status(400).json({ message: 'Número de caracteres acima do permitido no campo "descricao".' });
+    }
+
     next();
 };
 
@@ -100,6 +124,10 @@ const validateDescricaoRapida = (request, response, next) => {
     
     if (typeof descricao_rapida !== 'string' || descricao_rapida.trim() === '') {
         return response.status(400).json({ message: "O campo descricao rapida é necessário" });
+    }
+
+    if (descricao_rapida.length > 150){
+        return response.status(400).json({ message: 'Número de caracteres acima do permitido no campo "descricao rapida".' });
     }
 
     next();

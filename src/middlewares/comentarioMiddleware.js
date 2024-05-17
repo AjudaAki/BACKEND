@@ -1,4 +1,4 @@
-const connection = require('../models/connection');
+const connection = require('../repositorys/connection');
 
 const { response, request } = require("express");
 
@@ -7,7 +7,7 @@ const validateComentario = async (request, response, next) => {
     console.log(comentario_usuario);
     console.log(comentario_usuario.length);
     if (comentario_usuario.length === 0){
-        return response.status(404).json({ message: 'O comentário não pode ser vazio :('});
+        return response.status(404).json({ message: 'O comentário não pode ser vazio'});
     }
     next();
 

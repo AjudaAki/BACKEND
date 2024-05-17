@@ -12,6 +12,7 @@ const localizacaoController = require('./controllers/localizacaoController');
 const precoController = require('./controllers/precoController');
 const comentarioController = require('./controllers/comentarioController');
 const favoritoController = require('./controllers/favoritoController');
+const contatosController = require('./controllers/contatosController');
 
 //Middlewares
 const userMiddleware = require('./middlewares/userMiddleware');
@@ -23,6 +24,7 @@ const favoritoMiddleware = require('./middlewares/favoritoMiddleware');
 const comentarioMiddleware = require('./middlewares/comentarioMiddleware');
 const precoMiddleware = require('./middlewares/precoMiddleware');
 const localizacaoMiddleware = require('./middlewares/localizacaoMiddleware');
+const contatosMiddleware = require('./middlewares/contatosMiddleware')
 
 //Login
 const autenticarAuth = require('./auth/autenticar');
@@ -59,9 +61,16 @@ router.delete('/tags/:id_tag', tagsController.deleteTag);
 router.put('/tags/:id_tag', tagsMiddleware.validateNomeTag, tagsController.updateTag);
 
 //Tags Professor
-router.get('/tagsprof', tagsProfController.getAll);
-router.post('/tagsprof', tagsProfMiddleware.tagProfEmUso, tagsProfController.createTagProf);
-router.delete('/tagsprof/:id_usuario/:id_tag', tagsProfController.deleteTagProf);
+router.get('/users/professor/tags', tagsProfController.getAll);
+router.post('/users/professor/tags', 
+    tagsProfMiddleware.tagProfEmUso, 
+    tagsProfMiddleware.validateIdTag, 
+    tagsProfMiddleware.validateIdUsuario, 
+    tagsProfController.createTagProf);
+router.delete('/users/professor/tags/:id_usuario/:id_tag', 
+    tagsProfMiddleware.validateIdTagParam,
+    tagsProfMiddleware.validateIdUsuarioParam,
+    tagsProfController.deleteTagProf);
 
 //Horários
 router.get('/horarios', horariosController.getAll);
@@ -83,10 +92,12 @@ router.put('/avaliacao/:id_avaliacao_professor',
     avaliacaoMiddleware.validateAvaliacao,
     avaliacaoController.updateAvaliacao);
 
+//Favoritos
 router.get('/favorito', favoritoController.getAll);
 router.post('/favorito', favoritoMiddleware.validateFavorito,favoritoController.createFavorito);
 router.delete('/favorito/:usuario_logado/:usuario_relacionado', favoritoController.deleteFavorito);
 
+//Comentarios
 router.get('/comentario', comentarioController.getAll);
 router.post('/comentario', 
     comentarioMiddleware.validateComentario, 
@@ -98,6 +109,7 @@ router.put('/comentario/:id_comentario',
     comentarioMiddleware.validateCaracter,
     comentarioController.updateComentario);
 
+//Preços
 router.get('/preco', precoController.getAll);
 router.post('/preco', 
     precoMiddleware.validateExiste, 
@@ -107,6 +119,7 @@ router.post('/preco',
 router.delete('/preco/:id_preco_professor', precoController.deletePreco);
 router.put('/preco/:id_preco_professor', precoMiddleware.validateExiste, precoMiddleware.validatePrecoMin, precoMiddleware.validatePrecoMax,precoController.updatePreco);
 
+//Localização
 router.get('/localizacao' ,localizacaoController.getAll);
 router.post('/localizacao', 
     localizacaoMiddleware.validateEstado, 
@@ -117,6 +130,20 @@ router.post('/localizacao',
     localizacaoController.createLocalizacao);
 router.delete('/localizacao/:id_usuario', localizacaoController.deleteLocalizacao);
 router.put('/localizacao/:id_usuario', localizacaoMiddleware.validateEstado,localizacaoController.updateLocalizacao);
+
+//Contatos
+router.get('/contatos', contatosController.getAll);
+router.post('/contatos', 
+    contatosMiddleware.validateProfessorId,
+    contatosMiddleware.validateProfessorContato,
+    contatosMiddleware.validateFieldsLenght,
+    contatosController.createContato);
+router.put('/contatos/:id_professor', 
+    contatosMiddleware.validateProfessorIdParams,
+    contatosMiddleware.validateProfessorContatoParams,
+    contatosMiddleware.validateFieldsLenght,
+    contatosController.updateContato); 
+
 
 //Login
 router.post('/login', autenticarAuth.autenticar);

@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const comentarioModel = require('../models/comentarioModel');
+const comentarioModel = require('../repositorys/comentarioModel');
 
 const getAll = async (request, response) => {
     const comentarios = await comentarioModel.getAll();
