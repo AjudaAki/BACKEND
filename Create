@@ -1,0 +1,94 @@
+CREATE DATABASE AjudaAki;
+
+USE AjudaAki;
+
+CREATE TABLE IF NOT EXISTS `USUARIOS` (
+	`id` int AUTO_INCREMENT NOT NULL UNIQUE,
+	`nome` varchar(255) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	`senha` varchar(255) NOT NULL,
+	`telefone` varchar(14) NOT NULL,
+	`cpf` varchar(12) NOT NULL,
+	`data_nascimento` date NOT NULL,
+	`descricao` varchar(700),
+	`descricao_rapida` varchar(150),
+	`modo_professor` bit(1) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+ 
+
+CREATE TABLE IF NOT EXISTS `TAGS_PROFESSOR` (
+	`id_usuario` int NOT NULL,
+	`id_tag` int NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `HORARIOS` (
+	`id_horario` int AUTO_INCREMENT NOT NULL UNIQUE,
+	`id_usuario` int NOT NULL,
+	`hora_inicio` time NOT NULL,
+	`hora_fim` time NOT NULL,
+	`dia_semana` enum ('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado') NOT NULL,
+	PRIMARY KEY (`id_horario`)
+);
+
+CREATE TABLE IF NOT EXISTS `COMENTARIOS` (
+	`id_comentario` int AUTO_INCREMENT NOT NULL,
+	`id_usuario` int NOT NULL,
+	`id_perfil` int NOT NULL,
+	`comentario_usuario` varchar(200) NOT NULL,
+	PRIMARY KEY (`id_comentario`)
+);
+
+CREATE TABLE IF NOT EXISTS `FAVORITOS` (
+	`usuario_logado` int NOT NULL,
+	`usuario_relacionado` int NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `LOCALIZACAO_USUARIO` (
+	`id_usuario` int NOT NULL,
+	`estado` varchar(255) NOT NULL,
+	`cidade` varchar(255) NOT NULL,
+	`bairro` varchar(255) NOT NULL,
+	`rua` varchar(255) NOT NULL,
+	`numero_casa` int NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `AVALIACAO_PROFESSOR` (
+	`usuario_avaliador` int NOT NULL,
+	`professor_avaliado` int NOT NULL,
+	`nota` tinyint NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `PRECO_PROFESSOR` (
+	`id_professor` int NOT NULL,
+	`preco_minimo` varchar(255) NOT NULL,
+	`preco_maximo` varchar(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS `Contatos` (
+	`id_professor` int NOT NULL,
+	`discord` varchar(255) NOT NULL,
+	`whatsapp` varchar(255) NOT NULL,
+	`teams` varchar(255) NOT NULL
+);
+
+
+ALTER TABLE `TAGS_PROFESSOR` ADD CONSTRAINT `TAGS_PROFESSOR_fk0` FOREIGN KEY (`id_usuario`) REFERENCES `USUARIOS`(`id`);
+
+ALTER TABLE `TAGS_PROFESSOR` ADD CONSTRAINT `TAGS_PROFESSOR_fk1` FOREIGN KEY (`id_tag`) REFERENCES `TAGS`(`id_tag`);
+ALTER TABLE `HORARIOS` ADD CONSTRAINT `HORARIOS_fk1` FOREIGN KEY (`id_usuario`) REFERENCES `USUARIOS`(`id`);
+ALTER TABLE `COMENTARIOS` ADD CONSTRAINT `COMENTARIOS_fk1` FOREIGN KEY (`id_usuario`) REFERENCES `USUARIOS`(`id`);
+
+ALTER TABLE `COMENTARIOS` ADD CONSTRAINT `COMENTARIOS_fk2` FOREIGN KEY (`id_perfil`) REFERENCES `USUARIOS`(`id`);
+ALTER TABLE `FAVORITOS` ADD CONSTRAINT `FAVORITOS_fk0` FOREIGN KEY (`usuario_logado`) REFERENCES `USUARIOS`(`id`);
+
+ALTER TABLE `FAVORITOS` ADD CONSTRAINT `FAVORITOS_fk1` FOREIGN KEY (`usuario_relacionado`) REFERENCES `USUARIOS`(`id`);
+ALTER TABLE `LOCALIZACAO_USUARIO` ADD CONSTRAINT `LOCALIZACAO_USUARIO_fk0` FOREIGN KEY (`id_usuario`) REFERENCES `USUARIOS`(`id`);
+ALTER TABLE `AVALIACAO_PROFESSOR` ADD CONSTRAINT `AVALIACAO_PROFESSOR_fk0` FOREIGN KEY (`usuario_avaliador`) REFERENCES `USUARIOS`(`id`);
+
+ALTER TABLE `AVALIACAO_PROFESSOR` ADD CONSTRAINT `AVALIACAO_PROFESSOR_fk1` FOREIGN KEY (`professor_avaliado`) REFERENCES `USUARIOS`(`id`);
+ALTER TABLE `PRECO_PROFESSOR` ADD CONSTRAINT `PRECO_PROFESSOR_fk0` FOREIGN KEY (`id_professor`) REFERENCES `USUARIOS`(`id`);
+
+
+
