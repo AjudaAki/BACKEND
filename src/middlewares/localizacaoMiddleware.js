@@ -71,7 +71,7 @@ const validateRua = async (request, response, next) => {
 const validateNum = async (request, response, next) => {
     const { numero_casa } = request.body;
 
-    if (typeof numero_casa !== 'string') {
+    if (typeof numero_casa !== "number") {
         return response.status(400).json({ message: 'O campo "numero" deve ser um número.' });
     }
 

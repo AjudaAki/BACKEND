@@ -9,4 +9,6 @@ const encryptPassword = async (senha) => {
     }
 };
 
-module.exports = encryptPassword;
+module.exports = {
+    encryptPassword
+};

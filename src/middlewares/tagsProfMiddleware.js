@@ -13,13 +13,15 @@ const tagProfEmUso = async (request, response, next) => {
 
 const validateIdUsuario = (request, response, next) => {
     const { body } = request;
+    const idLogado = request.userId; 
 
-    if (typeof body.id_usuario !== 'number' || isNaN(body.id_usuario)) {
-        return response.status(400).json({ message: "É necessário atribuir um usuário a essa tag" });
+    if (typeof body.id_usuario !== 'number' || isNaN(body.id_usuario) || body.id_usuario !== idLogado) {
+        return response.status(400).json({ message: "Usuário inválido" });
     }
 
     next();
 };
+
 
 const validateIdTag = (request, response, next) => {
     const { body } = request;
@@ -32,10 +34,11 @@ const validateIdTag = (request, response, next) => {
 };
 
 const validateIdUsuarioParam = (request, response, next) => {
-    const id_usuario = parseInt(request.params.id_usuario);
+    const { params } = request;
+    const idLogado = request.userId; 
 
-    if (isNaN(id_usuario)) {
-        return response.status(400).json({ message: "É necessário atribuir um usuário a essa tag" });
+    if (isNaN(params.id_usuario) || parseInt(params.id_usuario) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
     }
 
     next();

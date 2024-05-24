@@ -5,7 +5,7 @@ const { response } = require("express");
 const validateExiste = async (request, response, next) =>{
     try {
         const { id_professor } = request.body;
-        const [existe] = await connection.execute('SELECT * FROM PRECO_PROFESSOR WHERE id_professor = ?', [id_professor]);
+        const [existe] = await connection.execute('SELECT * FROM USUARIOS WHERE id = ?', [id_professor]);
         if (existe.length == 0){
             return response.status(404).json({ message: 'Esse professor não existe'});            
         }

@@ -1,7 +1,7 @@
 const contatosModel = require('../repositorys/contatosModel');
 
 const getAll = async (request, response) => {
-    const contatos = await contatosModel.getAll();
+    const contatos = await contatosModel.getAll(request.params.id_professor);
     return response.status(200).json(contatos)
 };
 

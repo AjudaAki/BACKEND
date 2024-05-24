@@ -46,6 +46,8 @@ const validateProfessorId = async (request, response, next) => {
 
 const validateFieldsLenght = async (request, response, next) => {
 
+    const { discord, whatsapp, teams } = request.body;
+
     if (discord.length > 500){
         return response.status(400).json({ message: 'Número de caracteres acima do permitido no campo "discord".' });
     }
