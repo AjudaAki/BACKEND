@@ -1,4 +1,4 @@
-const horariosModel = require('../repositorys/horariosModel');
+const horariosModel = require('../models/horariosModel');
 
 const getAll = async (request, response) => {
     const horarios = await horariosModel.getAll();

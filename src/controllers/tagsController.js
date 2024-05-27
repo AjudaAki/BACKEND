@@ -1,4 +1,4 @@
-const tagsModel = require('../repositorys/tagsModel');
+const tagsModel = require('../models/tagsModel');
 
 const getAll = async (request, response) => {
     const tags = await tagsModel.getAll();

@@ -1,4 +1,4 @@
-const connection = require('../repositorys/connection');
+const connection = require('../models/connection');
 
 const { response } = require("express");
 

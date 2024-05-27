@@ -1,4 +1,4 @@
-const avaliacaoModel = require('../repositorys/avaliacaoModel');
+const avaliacaoModel = require('../models/avaliacaoModel');
 
 const getAll = async (request, response) => {
     const avaliacoes = await avaliacaoModel.getAll();
