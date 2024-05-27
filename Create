@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `AVALIACAO_PROFESSOR` (
 );
 
 CREATE TABLE IF NOT EXISTS `PRECO_PROFESSOR` (
+	`id_preco_professor` int NOT NULL,
 	`id_professor` int NOT NULL,
 	`new_field` int NOT NULL,
 	`preco_minimo` decimal(10,0) NOT NULL,
