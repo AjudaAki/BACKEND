@@ -81,6 +81,17 @@ const validateNum = async (request, response, next) => {
     next();
 }
 
+const validateIdUsuarioParam = (request, response, next) => {
+    const { params } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(params.id_usuario) || parseInt(params.id_usuario) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 
 
 module.exports = {
@@ -89,4 +100,5 @@ module.exports = {
     validateBairro,
     validateRua,
     validateNum,
+    validateIdUsuarioParam
 }

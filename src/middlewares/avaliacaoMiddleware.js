@@ -11,6 +11,18 @@ const validateAvaliacao = (request, response, next) => {
 
 }
 
+const validateIdUsuario = (request, response, next) => {
+    const { body } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 module.exports = {
     validateAvaliacao,
+    validateIdUsuario
 }

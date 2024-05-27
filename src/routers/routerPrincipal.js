@@ -10,6 +10,7 @@ const routerPreco = require('./routerPreco');
 const routerTags = require('./routerTags');
 const routerTagsProf = require('./routerTagsProf');
 const routerUser = require('./routerUser');
+const routerContatos = require('./routerContatos')
 
 
 router.use(routerAvaliacao);
@@ -21,6 +22,7 @@ router.use(routerPreco);
 router.use(routerTags);
 router.use(routerTagsProf);
 router.use(routerUser);
+router.use(routerContatos)
 
 
 module.exports = router;

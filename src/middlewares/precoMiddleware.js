@@ -4,7 +4,7 @@ const { response } = require("express");
 
 const validateExiste = async (request, response, next) =>{
     try {
-        const { id_professor } = request.body;
+        const { id_professor } = request.params;
         const [existe] = await connection.execute('SELECT * FROM USUARIOS WHERE id = ?', [id_professor]);
         if (existe.length == 0){
             return response.status(404).json({ message: 'Esse professor não existe'});            
@@ -41,8 +41,20 @@ const validatePrecoMax = (request, response, next) => {
     next();
 };
 
+const validateIdUsuarioParam = (request, response, next) => {
+    const { params } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(params.id_professor) || parseInt(params.id_professor) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 module.exports = {
     validateExiste,
+    validateIdUsuarioParam,
     validatePrecoMin,
     validatePrecoMax,
 };

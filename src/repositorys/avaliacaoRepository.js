@@ -17,7 +17,6 @@ const deleteAvaliacao = async (id_avaliacao_professor) => {
     return await connection.execute(query, [id_avaliacao_professor]);
 };
 
-
 const updateAvaliacao = async (id_avaliacao_professor, AVALIACAO_PROFESSOR) => {
     const query = "UPDATE AVALIACAO_PROFESSOR SET nota = ? WHERE id_avaliacao_professor = ?";
     const { nota } = AVALIACAO_PROFESSOR;

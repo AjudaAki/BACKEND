@@ -3,9 +3,10 @@ const router = express.Router();
 
 const horariosController = require('../controllers/horariosController');
 const horariosMiddleware = require('../middlewares/horariosMiddleware');
+const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Horários
-router.get('/horarios', horariosController.getAll);
+router.get('/horarios', usuarioLogadoMiddleware.validateToken, horariosController.getAll);
 router.post('/horarios', 
     horariosMiddleware.validateUsuario,
     horariosMiddleware.validateHoraInicio,
@@ -13,7 +14,7 @@ router.post('/horarios',
     horariosMiddleware.validateDiaSemana,
     horariosMiddleware.horarioEmUso,
     horariosController.createHorario);
-router.delete('/horarios/:id_horario', horariosController.deleteHorario);
-router.put('/horarios/:id_horario', horariosController.updateHorario);
+router.delete('/horarios/:id_horario', usuarioLogadoMiddleware.validateToken, horariosController.deleteHorario);
+router.put('/horarios/:id_horario', usuarioLogadoMiddleware.validateToken, horariosController.updateHorario);
 
 module.exports = router;

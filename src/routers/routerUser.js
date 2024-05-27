@@ -6,12 +6,20 @@ const userController = require('../controllers/userController');
 
 //Middlewares
 const userMiddleware = require('../middlewares/userMiddleware');
+const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Login
 const autenticarAuth = require('../auth/autenticar');
 
 //Usuarios
-router.get('/users', userController.getAll);
+router.get('/users', usuarioLogadoMiddleware.validateToken, userController.getAll);
+
+router.get('/users/professor', usuarioLogadoMiddleware.validateToken, userController.getProfs);
+
+router.get('/users/professor/:id', usuarioLogadoMiddleware.validateToken, userController.getOneProf);
+
+router.get('/users/aluno/:id', usuarioLogadoMiddleware.validateToken, userController.getOneAluno);
+
 router.post('/users/professor', 
     userMiddleware.validateName, 
     userMiddleware.validateEmail, 
@@ -32,9 +40,20 @@ router.post('/users/aluno',
     userMiddleware.validateNascimento,
     userController.createAluno);
 
-router.delete('/users/:id', userController.deleteUser);
-router.put('/users/:id', userController.updateUser);
 
+// router.delete('/users/:id', userController.deleteUser);
+router.put('/users/:id', 
+    usuarioLogadoMiddleware.validateToken, 
+    userMiddleware.validateIdUsuarioParam, 
+    userMiddleware.validateName, 
+    userMiddleware.validateEmail, 
+    userMiddleware.validatePassword, 
+    userMiddleware.validateTelefone,
+    userMiddleware.validateCpf,
+    userMiddleware.validateNascimento,
+    userMiddleware.validateDescricao,
+    userMiddleware.validateDescricaoRapida,
+    userController.updateUser);
 
 //Login
 router.post('/login', autenticarAuth.autenticar);

@@ -22,17 +22,6 @@ const validateProfessorContatoParams = async (request, response, next) => {
     next();
 };
 
-const validateProfessorContato = async (request, response, next) => {
-    const { id_professor } = request.body;
-
-    const [contato] = await connection.execute('SELECT * FROM CONTATOS WHERE id_professor = ?', [id_professor]);
-    if (contato.length > 0) {
-        return response.status(401).json({ message: 'Esse professor já possui contatos cadastrados' });
-    }
-        
-    next();
-};
-
 const validateProfessorId = async (request, response, next) => {
     const { id_professor } = request.body;
 
@@ -63,10 +52,21 @@ const validateFieldsLenght = async (request, response, next) => {
     next();
 };
 
+const validateIdUsuarioParam = (request, response, next) => {
+    const { params } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(params.id_professor) || parseInt(params.id_professor) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 module.exports = {
     validateProfessorIdParams,
     validateProfessorContatoParams,
     validateProfessorId,
-    validateProfessorContato,
-    validateFieldsLenght
+    validateFieldsLenght,
+    validateIdUsuarioParam
 };

@@ -21,11 +21,11 @@ const getOneProf = async (id) => {
 };
 
 const getOneAluno = async (id) => {
-    const [user] = await connection.execute("SELECT id, nome, email, senha, telefone, cpf, descricao, descricao_rapida, CAST(modo_professor AS UNSIGNED) AS modo_professor FROM USUARIOS WHERE id = ?", [id]);
+    const [users] = await connection.execute("SELECT id, nome, email, senha, telefone, cpf, descricao, descricao_rapida, CAST(modo_professor AS UNSIGNED) AS modo_professor FROM USUARIOS WHERE id = ?", [id]);
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
-      }
-    return user;
+    }
+    return users;
 };
 
 const getProfs = async () => {
