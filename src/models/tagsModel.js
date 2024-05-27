@@ -7,7 +7,6 @@ const getAll = async() => {
 
 const createTag = async(tag) => {
     const { nome_tag } = tag;
-    console.log('AAAAAAAAAA')
 
     const query = "INSERT INTO TAGS (nome_tag) VALUES (?)";
 
