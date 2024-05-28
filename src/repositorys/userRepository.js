@@ -52,7 +52,7 @@ const createProfessor = async(user) => {
 const createAluno = async(user) => {
     const { nome, email, senha, telefone, cpf, data_nascimento } = user;
 
-    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, descricao, descricao_rapida, modo_professor) VALUES (?, ?, ?, ?, ?, ?, '', '', 0)";
+    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, data_nascimento, modo_professor) VALUES (?, ?, ?, ?, ?, ?, 0)";
 
     const hashedPassword = await encryptPassword(senha)
 
