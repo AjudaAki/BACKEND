@@ -1,4 +1,8 @@
+const { response } = require('express');
 const userRepository = require('../repositorys/userRepository');
+const {v4} = require('uuid');
+const path = require('path');
+const fs = require('fs');
 
 const getAll = async (request, response) => {
     const users = await userRepository.getAll();
@@ -20,13 +24,57 @@ const getProfs = async (request, response) => {
     return response.status(200).json(users)
 };
 
+// const getImgPerfil = async (request, response) => {
+//     const [imgs] = await userRepository.getIMG(request.params.id)
+//     const img_path = imgs.img_perfil
+//     const realImgPath = path.join(process.cwd(),img_path)
+//     return response.status(200).sendFile(realImgPath)
+// };
+
+const getImgPerfil = async (request, response) => {
+    try {
+        const [imgs] = await userRepository.getIMG(request.params.id);
+        
+        if (!imgs) {
+            return response.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        const img_path = imgs.img_perfil;
+
+        if (!img_path) {
+            return response.status(404).json({ error: 'Imagem de perfil não encontrada' });
+        }
+
+        const realImgPath = path.join(process.cwd(), img_path);
+
+        if (!fs.existsSync(realImgPath)) {
+            return response.status(404).json({ error: 'Imagem de perfil não encontrada' });
+        }
+
+        return response.status(200).sendFile(realImgPath);
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ error: 'Erro interno no servidor' });
+    }
+};
+
 const createAluno = async (request, response) => {
+    const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
+    const imgPath = `imagens/${v4()}.png`;
+    require("fs").writeFileSync(imgPath, base64Data, 'base64')
+    request.body.img_perfil = imgPath;
     const createdAluno = await userRepository.createAluno(request.body);
+
     return response.status(201).json(createdAluno);
 };
 
 const createProfessor = async (request, response) => {
+    const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
+    const imgPath = `imagens/${v4()}.png`;
+    require("fs").writeFileSync(imgPath, base64Data, 'base64')
+    request.body.img_perfil = imgPath;
     const createdProfessor = await userRepository.createProfessor(request.body);
+    
     return response.status(201).json(createdProfessor);
 };
 
@@ -47,6 +95,7 @@ module.exports = {
     getProfs,
     getOneAluno,
     getOneProf,
+    getImgPerfil,
     createProfessor,
     createAluno,
     deleteUser,
