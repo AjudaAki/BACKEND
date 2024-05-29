@@ -38,25 +38,32 @@ const getProfs = async () => {
     return users;
 };
 
-const createProfessor = async(user) => {
-    const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida } = user;
+const getIMG = async (id) => {
+    const query = "SELECT img_perfil FROM USUARIOS WHERE id = ?";
+    const [img] = await connection.execute(query, [id]);
+    return img;
+};
 
-    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, modo_professor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)";
+
+const createProfessor = async(user) => {
+    const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil } = user;
+
+    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, modo_professor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
 
     const hashedPassword = await encryptPassword(senha);
 
-    const [createdProfessor] = await connection.execute(query, [nome, email, hashedPassword, telefone, cpf, data_nascimento, descricao, descricao_rapida]);
+    const [createdProfessor] = await connection.execute(query, [nome, email, hashedPassword, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil]);
     return {insertId: createdProfessor.insertId};
 };
 
 const createAluno = async(user) => {
-    const { nome, email, senha, telefone, cpf, data_nascimento } = user;
+    const { nome, email, senha, telefone, cpf, data_nascimento, img_perfil } = user;
 
-    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, descricao, descricao_rapida, modo_professor) VALUES (?, ?, ?, ?, ?, ?, '', '', 0)";
+    const query = "INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, data_nascimento, img_perfil, modo_professor) VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
 
     const hashedPassword = await encryptPassword(senha)
 
-    const [createdAluno] = await connection.execute(query, [nome, email, hashedPassword, telefone, cpf, data_nascimento]);
+    const [createdAluno] = await connection.execute(query, [nome, email, hashedPassword, telefone, cpf, data_nascimento, img_perfil]);
     return {insertId: createdAluno.insertId};
 };
 
@@ -74,6 +81,7 @@ module.exports = {
     getProfs,
     getOneAluno,
     getOneProf,
+    getIMG,
     createAluno,
     createProfessor,
     updateUser

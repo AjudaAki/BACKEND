@@ -10,6 +10,7 @@ router.post('/preco',
     precoMiddleware.validatePrecoMin,
     precoMiddleware.validatePrecoMax,
     precoController.createPreco);
+    
 // router.delete('/preco/:id_preco_professor', usuarioLogadoMiddleware.validateToken, precoController.deletePreco);
 router.put('/preco/:id_professor', 
     usuarioLogadoMiddleware.validateToken,  

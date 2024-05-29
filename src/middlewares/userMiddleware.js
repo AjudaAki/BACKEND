@@ -26,20 +26,27 @@ const validateEmail = async (request, response, next) => {
     }
 
     try {
-        const [user] = await connection.execute('SELECT * FROM USUARIOS WHERE email = ?', [email]);
-
-        if (user.length !== 0) {
-            return response.status(401).json({ message: 'Email já cadastrado' });
+        // Verifica apenas se o e-mail já está cadastrado se estiver sendo atualizado
+        if (request.params.id) {
+            const [user] = await connection.execute('SELECT * FROM USUARIOS WHERE email = ? AND id != ?', [email, request.params.id]);
+            if (user.length !== 0) {
+                return response.status(401).json({ message: 'Email já cadastrado' });
+            }
+        } else {
+            // Caso seja um novo usuário, verifica se o e-mail já está cadastrado
+            const [user] = await connection.execute('SELECT * FROM USUARIOS WHERE email = ?', [email]);
+            if (user.length !== 0) {
+                return response.status(401).json({ message: 'Email já cadastrado' });
+            }
         }
 
         next();
-    } 
-    
-    catch (error) {
+    } catch (error) {
         console.error("Erro ao verificar o email:", error);
         return response.status(500).json({ message: "Erro interno do servidor" });
     }
 };
+
   
 const validatePassword = (request, response, next) => {
     const { senha } = request.body;

@@ -20,6 +20,8 @@ router.get('/users/professor/:id', usuarioLogadoMiddleware.validateToken, userCo
 
 router.get('/users/aluno/:id', usuarioLogadoMiddleware.validateToken, userController.getOneAluno);
 
+router.get('/users/img/:id', userController.getImgPerfil);
+
 router.post('/users/professor', 
     userMiddleware.validateName, 
     userMiddleware.validateEmail, 
