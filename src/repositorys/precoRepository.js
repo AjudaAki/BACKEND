@@ -3,7 +3,7 @@ const connection = require('./connection');
 const getAll = async () => {
     const [preco] = await connection.execute('SELECT * FROM PRECO_PROFESSOR');
     return preco;
-}
+};
 
 const createPreco = async (id_professor, preco_minimo, preco_maximo) => {
     const query = "INSERT INTO PRECO_PROFESSOR (id_professor, preco_minimo, preco_maximo) VALUES (?,?,?)";
@@ -29,4 +29,4 @@ module.exports = {
     createPreco,
     deletePreco,
     updatePreco,
-}
+};
