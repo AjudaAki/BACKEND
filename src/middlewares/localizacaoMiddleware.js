@@ -70,17 +70,18 @@ const validateRua = async (request, response, next) => {
 
 const validateNum = async (request, response, next) => {
     const { numero_casa } = request.body;
+    const numero = Number(numero_casa);
 
-    if (typeof numero_casa !== "number") {
-        return response.status(400).json({ message: 'O campo "numero" deve ser um número.' });
+    if (isNaN(numero)) {
+        return response.status(400).json({ message: 'O campo "numero_casa" deve ser um número.' });
     }
-
-    if (numero_casa.trim() === '') {
-        return response.status(400).json({ message: 'O campo não pode ser vazio' });
+    request.body.numero_casa = numero;
+    
+    if (numero == " "){
+        return response.status(400).json({message: 'O campo "número" não pode ser vazio. '})
     }
     next();
 }
-
 const validateIdUsuarioParam = (request, response, next) => {
     const { params } = request;
     const idLogado = request.userId; 
@@ -88,6 +89,7 @@ const validateIdUsuarioParam = (request, response, next) => {
     if (isNaN(params.id_usuario) || parseInt(params.id_usuario) !== parseInt(idLogado)) {
         return response.status(400).json({ message: "Usuário inválido" });
     }
+    
 
     next();
 };

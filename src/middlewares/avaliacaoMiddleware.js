@@ -15,11 +15,16 @@ const validateIdUsuario = (request, response, next) => {
     const { body } = request;
     const idLogado = request.userId; 
 
-    if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador) !== parseInt(idLogado)) {
-        return response.status(400).json({ message: "Usuário inválido" });
+    if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador)) {
+        return response.status(400).json({ message: "Não é possível se autoavaliar!" });
     }
 
+//middleware para não deixar o usuário fazer duas avaliações no mesmo professor 
+
+
     next();
+
+    
 };
 
 module.exports = {

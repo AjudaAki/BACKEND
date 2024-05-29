@@ -8,7 +8,7 @@ const getAll = async () => {
 const createFavorito = async (usuario_logado, usuario_relacionado) => {
     const query = "INSERT INTO FAVORITOS (usuario_logado, usuario_relacionado) VALUES (?, ?)";
     const [createdFavorito] = await connection.execute(query, [usuario_logado, usuario_relacionado]);
-    return { message: 'deu bom'}
+    return { message: 'Favorito criado com sucesso!'}
 };
 
 const deleteFavorito = async (FAVORITOS) => {
@@ -18,7 +18,7 @@ const deleteFavorito = async (FAVORITOS) => {
     const [deletedFavorito] = await connection.execute(query, [usuario_logado, usuario_relacionado]);
     console.log(deletedFavorito.affectedRows);
     if (!deletedFavorito.affectedRows) {
-        throw new Error('Favorito não encontrado');
+        throw new Error('Favorito não encontrado.');
     }
     return deletedFavorito;
     

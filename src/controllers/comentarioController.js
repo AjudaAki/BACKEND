@@ -12,25 +12,10 @@ const createComentario = async (request, response) => {
     return response.status(201).json(createdComentario);
 };
 
-const deleteComentario = async (request, response) => {
-    const {id_comentario} = request.params;
-    const result = await comentarioRepository.deleteComentario(id_comentario);
-        return response.status(404).json({ message: 'Comentario deletada com sucesso! ' }); 
-    
-}
-
-const updateComentario = async (request, response) => {
-    const {id_comentario} = request.params;
-    await comentarioRepository.updateComentario(id_comentario, request.body);
-    return response.status(200).json({ message: 'Atualização de comentário feito com sucesso'});
-
-}
 
 
 
 module.exports = {
     getAll,
     createComentario,
-    deleteComentario, 
-    updateComentario,
 }

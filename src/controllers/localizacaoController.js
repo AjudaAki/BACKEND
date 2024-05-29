@@ -14,13 +14,13 @@ const createLocalizacao = async (request, response) => {
 const deleteLocalizacao = async (request, response) => {
     const {id_usuario} = request.params;
     const result = await localizacaoRepository.deleteLocalizacao(id_usuario);
-        return response.status(401).json({ message: 'Localizacao deletada colega :D'})
+        return response.status(401).json({ message: 'Localizacao deletada com sucesso'})
 }
 
 const updateLocalizacao = async (request, response) => {
     const {id_usuario} = request.params;
     await localizacaoRepository.updateLocalizacao(id_usuario, request.body);
-    return response.status(200).json({ message: "Atualizacao da lista mais gay de 2017"})
+    return response.status(200).json({ message: "Localização atualizada com sucesso."})
 }
 
 module.exports = {

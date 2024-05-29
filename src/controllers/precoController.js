@@ -21,7 +21,7 @@ const deletePreco = async (request, response) => {
 const updatePreco = async (request, response) => {
     const {id_professor} = request.params;
     await precoRepository.updatePreco(id_professor, request.body);
-    return response.status(200).json({ message: 'Atualização de preços feita :D '});
+    return response.status(200).json({ message: 'Atualização de preços efetuado com sucesso!'});
 }
 
 module.exports = {

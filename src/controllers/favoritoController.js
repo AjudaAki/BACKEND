@@ -18,12 +18,6 @@ const deleteFavorito = async (request, response) => {
         return response.status(204).json({ message: 'Avaliação deletada com sucesso! '})
 }
 
-/*const deleteFavorito = async (request, response) => {
-    const {id_favorito} = request.params;
-    const result = await favoritoModel.deleteFavorito(id_favorito);
-        return response.status(404).json({ message: 'Favorito deletada com sucesso! ' }); 
-    
-}*/
 
 module.exports = {
     getAll,
