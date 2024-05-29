@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const avaliacaoRepository = require('../repositorys/avaliacaoRepository');
-=======
-const avaliacaoModel = require('../models/avaliacaoModel');
->>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
 
 const getAll = async (request, response) => {
     const avaliacoes = await avaliacaoRepository.getAll();
