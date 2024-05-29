@@ -1,4 +1,4 @@
-const contatosRepository = require('../repositorys/contatosRepository');
+const contatosRepository = require('../repositories/contatosRepository');
 
 const getAll = async (request, response) => {
     const contatos = await contatosRepository.getAll(request.params.id_professor);

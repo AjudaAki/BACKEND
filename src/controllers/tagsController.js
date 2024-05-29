@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const tagsRepository = require('../repositorys/tagsRepository');
-=======
-const tagsModel = require('../models/tagsModel');
->>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
+const tagsRepository = require('../repositories/tagsRepository');
 
 const getAll = async (request, response) => {
     const tags = await tagsRepository.getAll();

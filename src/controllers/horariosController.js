@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const horariosRepository = require('../repositorys/horariosRepository');
-=======
-const horariosModel = require('../models/horariosModel');
->>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
+const horariosRepository = require('../repositories/horariosRepository');
 
 const getAll = async (request, response) => {
     const horarios = await horariosRepository.getAll();

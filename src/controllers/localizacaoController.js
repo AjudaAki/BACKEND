@@ -1,4 +1,4 @@
-const localizacaoRepository = require('../repositorys/localizacaoRepository');
+const localizacaoRepository = require('../repositories/localizacaoRepository');
 
 const getAll = async (request, response) => {
     const localizacao = await localizacaoRepository.getAll();

@@ -1,4 +1,4 @@
-const connection = require('../models/connection');
+const connection = require('../repositories/connection');
 
 const tagProfEmUso = async (request, response, next) => {
     const { id_usuario, id_tag } = request.body;

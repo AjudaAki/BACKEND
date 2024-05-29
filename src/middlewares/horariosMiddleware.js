@@ -1,4 +1,4 @@
-const connection = require('../models/connection');
+const connection = require('../repositories/connection');
 
 const validateUsuario = (request, response, next) => {
     const { body } = request;

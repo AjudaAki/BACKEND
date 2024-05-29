@@ -1,4 +1,4 @@
-const connection = require('../repositorys/connection');
+const connection = require('../repositories/connection');
 
 const validateProfessorIdParams = async (request, response, next) => {
     const { id_professor } = request.params;

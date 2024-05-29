@@ -1,6 +1,6 @@
 const { request, response } = require('express');
 
-const comentarioRepository = require('../repositorys/comentarioRepository');
+const comentarioRepository = require('../repositories/comentarioRepository');
 
 const getAll = async (request, response) => {
     const comentarios = await comentarioRepository.getAll();

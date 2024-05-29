@@ -1,5 +1,5 @@
 const { response } = require('express');
-const userRepository = require('../repositorys/userRepository');
+const userRepository = require('../repositories/userRepository');
 const {v4} = require('uuid');
 const path = require('path');
 const fs = require('fs');
