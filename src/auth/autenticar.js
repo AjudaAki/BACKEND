@@ -1,4 +1,4 @@
-const connection = require('../repositorys/connection');
+const connection = require('../repositories/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
