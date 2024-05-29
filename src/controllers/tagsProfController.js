@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const tagsProfRepository = require('../repositorys/tagsProfRepository');
+=======
+const tagsProfModel = require('../models/tagsProfModel');
+>>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
 
 const getAll = async (request, response) => {
     const tagsProf = await tagsProfRepository.getAll(request.params.id_usuario);

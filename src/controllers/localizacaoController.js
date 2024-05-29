@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const localizacaoRepository = require('../repositorys/localizacaoRepository');
+=======
+const localizacaoModel = require('../models/localizacaoModel');
+>>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
 
 const getAll = async (request, response) => {
     const localizacao = await localizacaoRepository.getAll();

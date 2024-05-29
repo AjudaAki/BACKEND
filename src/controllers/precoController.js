@@ -1,5 +1,9 @@
 const { request, response } = require('express');
+<<<<<<< HEAD
 const precoRepository = require('../repositorys/precoRepository');
+=======
+const precoModel = require('../models/precoModel');
+>>>>>>> 0513d43a9cad092f9a262239bc99c5713f7773e7
 
 const getAll = async (request, response) => {
     const precos = await precoRepository.getAll();
