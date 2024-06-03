@@ -18,16 +18,29 @@ const validateIdUsuario = (request, response, next) => {
     if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador)) {
         return response.status(400).json({ message: "Não é possível se autoavaliar!" });
     }
-
-//middleware para não deixar o usuário fazer duas avaliações no mesmo professor 
-
-
     next();
+};
 
-    
+const validateAvaliacaoDuplicada = async (request, response, next) => {
+    const { body } = request;
+    const { usuario_logado, usuario_relacionado } = body; 
+    try {
+        const query = "SELECT * FROM AVALIACAO_PROFESSOR WHERE usuario_avaliador = ? AND professor_avaliado = ?";
+        const [rows] = await pool.query(query, [usuario_logado, usuario_relacionado]);
+
+        if (rows.length > 0) {
+            return response.status(400).json({ message: "Apenas é permitido fazer uma avaliação para cada professor." });
+        }
+
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar avaliação duplicada:", error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
 };
 
 module.exports = {
     validateAvaliacao,
-    validateIdUsuario
+    validateIdUsuario,
+    validateAvaliacaoDuplicada
 }
