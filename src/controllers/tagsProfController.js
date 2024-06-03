@@ -1,8 +1,13 @@
 const tagsProfRepository = require('../repositories/tagsProfRepository');
 
 const getAll = async (request, response) => {
-    const tagsProf = await tagsProfRepository.getAll(request.params.id_usuario);
-    return response.status(200).json(tagsProf)
+    try {
+        const tagsProf = await tagsProfRepository.getAll(request.params.id_usuario);
+        return response.status(200).json(tagsProf);
+    } catch (error) {
+        console.error('Erro ao exibir as tags atreladas ao professor:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 const createTagProf = async (request, response) => {
