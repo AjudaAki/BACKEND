@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Horarios } = require('../models/horariosModel');
 
 const getAll = async() => {
     const [horarios] = await connection.execute("Select * from HORARIOS");

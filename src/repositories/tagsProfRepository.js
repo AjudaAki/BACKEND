@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { TagsProf } = require('../models/tagsProfModel');
 
 const getAll = async (id_usuario) => {
     const [tagsProf] = await connection.execute("SELECT * FROM TAGS_PROFESSOR WHERE id_usuario = ?", [id_usuario]);

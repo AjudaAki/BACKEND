@@ -1,6 +1,7 @@
 const connection = require('./connection');
 const {encryptPassword} = require('../auth/encryptPassword'); 
 const moment = require('moment')
+const { User } = require('../models/userModel');
 
 const getAll = async () => {
     const [users] = await connection.execute("SELECT id, nome, email, senha, telefone, cpf, descricao, descricao_rapida, CAST(modo_professor AS UNSIGNED) AS modo_professor FROM USUARIOS");

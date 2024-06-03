@@ -1,5 +1,5 @@
-
 const connection = require('./connection');
+const { Avaliacao } = require('../models/avaliacaoModel');
 
 const getAll = async () => {
     const [avaliacao] = await connection.execute('SELECT * FROM AVALIACAO_PROFESSOR');

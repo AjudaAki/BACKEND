@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Contatos } = require('../models/contatosModel');
 
 const getAll = async(id_professor) => {
     const [contatos] = await connection.execute("SELECT * FROM CONTATOS WHERE id_professor = ?", [id_professor]);

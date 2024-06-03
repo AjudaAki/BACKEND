@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Favoritos } = require('../models/favoritoModel');
 
 const getAll = async () => {
     const [favorito] = await connection.execute('SELECT * FROM FAVORITOS');

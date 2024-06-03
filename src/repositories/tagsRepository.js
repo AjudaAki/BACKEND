@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Tags } = require('../models/tagsModel');
 
 const getAll = async() => {
     const [tags] = await connection.execute("Select * from TAGS");
