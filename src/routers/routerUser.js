@@ -42,7 +42,6 @@ router.post('/users/aluno',
     userMiddleware.validateNascimento,
     userController.createAluno);
 
-
 // router.delete('/users/:id', userController.deleteUser);
 router.put('/users/:id', 
     usuarioLogadoMiddleware.validateToken, 

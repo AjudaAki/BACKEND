@@ -12,13 +12,18 @@ const createTagProf = async (request, response) => {
     } catch (error) {
         console.error('Erro ao criar tag para o professor:', error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
-    }
+    };
 };
 
 const deleteTagProf = async (request, response) => {
-    const { id_usuario, id_tag } = request.params;
-    await tagsProfRepository.deleteTagProf({ id_usuario, id_tag });
-    return response.status(204).json();
+    try {
+        const { id_usuario, id_tag } = request.params;
+        await tagsProfRepository.deleteTagProf({ id_usuario, id_tag });
+        return response.status(204).json();
+    } catch (error) {
+        console.error('Erro ao deletar tag do professor:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 module.exports = {
