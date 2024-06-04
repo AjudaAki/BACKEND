@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `USUARIOS` (
 	`descricao` varchar(700),
 	`descricao_rapida` varchar(150),
 	`modo_professor` bit(1) NOT NULL,
-	`img_perfil` varchar(255) NOT NULL,
+	`img_perfil` varchar(255),
 	PRIMARY KEY (`id`)
 );
 

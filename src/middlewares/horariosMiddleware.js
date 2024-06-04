@@ -2,9 +2,10 @@ const connection = require('../repositories/connection');
 
 const validateUsuario = (request, response, next) => {
     const { body } = request;
+    const idLogado = request.userId; 
 
-    if (typeof body.id_usuario !== 'number' || isNaN(body.id_usuario)) {
-        return response.status(400).json({ message: "É necessário atribuir um usuário a esse horário" });
+    if (isNaN(body.id_usuario) || parseInt(body.id_usuario) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
     }
 
     next();
