@@ -1,7 +1,5 @@
 const connection = require('../repositories/connection');
 
-const { response } = require("express");
-
 const validateFavorito = async (request, response, next) => {
     try {
         const { usuario_logado, usuario_relacionado } = request.body;

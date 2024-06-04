@@ -8,7 +8,7 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 //Horários
 router.get('/horarios', usuarioLogadoMiddleware.validateToken, horariosController.getAll);
 router.post('/horarios', 
-    horariosMiddleware.validateUsuario,
+    // horariosMiddleware.validateUsuario,
     horariosMiddleware.validateHoraInicio,
     horariosMiddleware.validateHoraTermino,
     horariosMiddleware.validateDiaSemana,

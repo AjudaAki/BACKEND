@@ -14,6 +14,8 @@ const autenticarAuth = require('../auth/autenticar');
 //Usuarios
 router.get('/users', usuarioLogadoMiddleware.validateToken, userController.getAll);
 
+router.get('/users/log', usuarioLogadoMiddleware.validateToken, userController.getUsuarioLog);
+
 router.get('/users/professor', usuarioLogadoMiddleware.validateToken, userController.getProfs);
 
 router.get('/users/professor/:id', usuarioLogadoMiddleware.validateToken, userController.getOneProf);

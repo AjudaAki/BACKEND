@@ -34,6 +34,19 @@ const getOneProf = async (request, response) => {
     };
 };
 
+const getUsuarioLog = async (request, response) => {
+    try{
+        const idLogado = request.userId; 
+
+        const user = await userRepository.getOneAluno(idLogado);
+
+        return response.status(200).json(user)
+    } catch (error) {
+        console.error('Erro ao exibir o aluno:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
+};
+
 const getProfs = async (request, response) => {
     try{
         const users = await userRepository.getProfs();
@@ -128,6 +141,7 @@ module.exports = {
     getProfs,
     getOneAluno,
     getOneProf,
+    getUsuarioLog,
     getImgPerfil,
     createProfessor,
     createAluno,
