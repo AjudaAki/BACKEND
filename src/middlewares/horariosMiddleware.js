@@ -4,9 +4,7 @@ const validateUsuario = (request, response, next) => {
     const { body } = request;
     const idLogado = request.userId; 
 
-    console.log(idLogado)
-
-    if (typeof body.id_usuario !== 'number' || isNaN(body.id_usuario) || body.id_usuario !== idLogado) {
+    if (isNaN(body.id_usuario) || parseInt(body.id_usuario) !== parseInt(idLogado)) {
         return response.status(400).json({ message: "Usuário inválido" });
     }
 

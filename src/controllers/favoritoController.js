@@ -24,7 +24,7 @@ const createFavorito = async (request, response) => {
 const deleteFavorito = async (request, response) => {
     try{
         const { usuario_logado, usuario_relacionado } = request.params;
-        await favoritoRepository.deleteFavorito({ usuario_logado, usuario_relacionado }).catch(e=>response.status(404).send(e.massage))
+        await favoritoRepository.deleteFavorito({ usuario_logado, usuario_relacionado }).catch(e=>response.status(404).send(e.message))
         return response.status(204).json({ message: 'Avaliação deletada com sucesso! '})
     } catch (error) {
         console.error('Erro ao deletar o favorito:', error)

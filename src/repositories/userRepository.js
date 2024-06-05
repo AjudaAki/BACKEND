@@ -38,7 +38,7 @@ const getAlunoLog = async (id) => {
 };
 
 const getProfessorLog = async (id) => {
-    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.hora_inicio, h.hora_fim, h.dia_semana, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE id = ?", [id]);
+    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.hora_inicio, h.hora_fim, h.dia_semana, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ?", [id]);
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
     }

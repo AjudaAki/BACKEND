@@ -1,4 +1,4 @@
-const { response } = require("express");
+const connection = require("../repositories/connection");
 
 const validateAvaliacao = (request, response, next) => {
     const { nota } = request.body;
@@ -13,9 +13,8 @@ const validateAvaliacao = (request, response, next) => {
 
 const validateIdUsuario = (request, response, next) => {
     const { body } = request;
-    const idLogado = request.userId; 
 
-    if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador)) {
+    if (parseInt(body.usuario_avaliador) === parseInt(body.professor_avaliado)) {
         return response.status(400).json({ message: "Não é possível se autoavaliar!" });
     }
     next();
@@ -23,10 +22,10 @@ const validateIdUsuario = (request, response, next) => {
 
 const validateAvaliacaoDuplicada = async (request, response, next) => {
     const { body } = request;
-    const { usuario_logado, usuario_relacionado } = body; 
+    const { usuario_avaliador, professor_avaliado } = body; 
     try {
         const query = "SELECT * FROM AVALIACAO_PROFESSOR WHERE usuario_avaliador = ? AND professor_avaliado = ?";
-        const [rows] = await pool.query(query, [usuario_logado, usuario_relacionado]);
+        const [rows] = await connection.query(query, [usuario_avaliador, professor_avaliado]);
 
         if (rows.length > 0) {
             return response.status(400).json({ message: "Apenas é permitido fazer uma avaliação para cada professor." });

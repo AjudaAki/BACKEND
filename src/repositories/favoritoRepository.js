@@ -17,7 +17,6 @@ const deleteFavorito = async (FAVORITOS) => {
     console.log(`DELETE FROM FAVORITOS WHERE usuario_logado = ${usuario_logado} AND usuario_relacionado = ${usuario_relacionado}`);
     const query = "DELETE FROM FAVORITOS WHERE usuario_logado = ? AND usuario_relacionado = ?";
     const [deletedFavorito] = await connection.execute(query, [usuario_logado, usuario_relacionado]);
-    console.log(deletedFavorito.affectedRows);
     if (!deletedFavorito.affectedRows) {
         throw new Error('Favorito não encontrado.');
     }
