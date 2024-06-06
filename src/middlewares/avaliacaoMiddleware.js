@@ -23,7 +23,6 @@ const validateAvaliacaoDuplicada = async (request, response, next) => {
         }
 
         next();
-
     } catch (error) {
 
         console.error("Erro ao verificar avaliação duplicada:", error);
