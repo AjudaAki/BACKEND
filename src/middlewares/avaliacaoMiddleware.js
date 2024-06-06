@@ -25,21 +25,21 @@ const validateAvaliacaoDuplicada = async (request, response, next) => {
     const { usuario_avaliador, professor_avaliado } = body; 
     try {
         const query = "SELECT * FROM AVALIACAO_PROFESSOR WHERE usuario_avaliador = ? AND professor_avaliado = ?";
-        const [rows] = await connection.query(query, [usuario_avaliador, professor_avaliado]);
-
+        const [rows] = await connection.execute(query, [usuario_avaliador, professor_avaliado]);
         if (rows.length > 0) {
-            return response.status(400).json({ message: "Apenas é permitido fazer uma avaliação para cada professor." });
-        }
-
-        next();
+        return response.status(400).json({ message: "Apenas é permitido fazer uma avaliação para cada professor." });
+    }
+    
+    next();
     } catch (error) {
+    
         console.error("Erro ao verificar avaliação duplicada:", error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
     }
 };
+    
 
 module.exports = {
     validateAvaliacao,
-    validateIdUsuario,
     validateAvaliacaoDuplicada
 }
