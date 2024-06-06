@@ -30,6 +30,11 @@ const validateProfessorId = async (request, response, next) => {
         return response.status(401).json({ message: 'Professor não encontrado' });
     }
         
+    const [usuario] = await connection.execute('SELECT * FROM CONTATOS WHERE id_professor = ?', [id_professor]);
+    if (usuario.length > 0) {
+        return response.status(401).json({ message: 'Esse professor já possui contatos cadastrados' });
+    }
+
     next();
 };
 
@@ -63,10 +68,22 @@ const validateIdUsuarioParam = (request, response, next) => {
     next();
 };
 
+const validateIdUsuario = (request, response, next) => {
+    const { body } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(body.id_professor) || parseInt(body.id_professor) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 module.exports = {
     validateProfessorIdParams,
     validateProfessorContatoParams,
     validateProfessorId,
     validateFieldsLenght,
-    validateIdUsuarioParam
+    validateIdUsuarioParam,
+    validateIdUsuario
 };

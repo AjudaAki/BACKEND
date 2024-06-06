@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Comentario } = require('../models/comentarioModel');
 
 const getAll = async () => {
     const [comentario] = await connection.execute('SELECT * FROM COMENTARIOS');

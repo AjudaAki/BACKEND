@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Preco } = require('../models/precoModel');
 
 const getAll = async () => {
     const [preco] = await connection.execute('SELECT * FROM PRECO_PROFESSOR');

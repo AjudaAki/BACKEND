@@ -5,23 +5,69 @@ const path = require('path');
 const fs = require('fs');
 
 const getAll = async (request, response) => {
-    const users = await userRepository.getAll();
-    return response.status(200).json(users)
+    try{
+        const users = await userRepository.getAll();
+        return response.status(200).json(users)
+    } catch (error) {
+        console.error('Erro ao exibir os usuários:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 const getOneAluno = async (request, response) => {
-    const user = await userRepository.getOneAluno(request.params.id);
-    return response.status(200).json(user)
+    try{
+        const user = await userRepository.getOneAluno(request.params.id);
+        return response.status(200).json(user)
+    } catch (error) {
+        console.error('Erro ao exibir o aluno:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 const getOneProf = async (request, response) => {
-    const user = await userRepository.getOneProf(request.params.id);
-    return response.status(200).json(user)
+    try{
+        const user = await userRepository.getOneProf(request.params.id);
+        return response.status(200).json(user)
+    } catch (error) {
+        console.error('Erro ao exibir o aluno:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
+};
+
+const getAlunoLog = async (request, response) => {
+    try{
+        const idLogado = request.userId; 
+
+        const user = await userRepository.getOneAluno(idLogado);
+
+        return response.status(200).json(user)
+    } catch (error) {
+        console.error('Erro ao exibir o aluno:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
+};
+
+const getProfessorLog = async (request, response) => {
+    try{
+        const idLogado = request.userId; 
+
+        const user = await userRepository.getProfessorLog(idLogado);
+
+        return response.status(200).json(user)
+    } catch (error) {
+        console.error('Erro ao exibir o aluno:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 const getProfs = async (request, response) => {
-    const users = await userRepository.getProfs();
-    return response.status(200).json(users)
+    try{
+        const users = await userRepository.getProfs();
+        return response.status(200).json(users)
+    } catch (error) {
+        console.error('Erro ao exibir o professor:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    };
 };
 
 const getImgPerfil = async (request, response) => {
@@ -29,58 +75,78 @@ const getImgPerfil = async (request, response) => {
         const [imgs] = await userRepository.getIMG(request.params.id);
         
         if (!imgs) {
-            return response.status(404).json({ error: 'Usuário não encontrado' });
+            return response.status(404).json({ message: 'Usuário não encontrado' });
         }
 
         const img_path = imgs.img_perfil;
 
         if (!img_path) {
-            return response.status(404).json({ error: 'Imagem de perfil não encontrada' });
+            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
         }
 
         const realImgPath = path.join(process.cwd(), img_path);
 
         if (!fs.existsSync(realImgPath)) {
-            return response.status(404).json({ error: 'Imagem de perfil não encontrada' });
+            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
         }
 
         return response.status(200).sendFile(realImgPath);
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ error: 'Erro interno no servidor' });
+        return response.status(500).json({ message: 'Erro interno no servidor' });
     }
 };
 
 const createAluno = async (request, response) => {
-    const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
-    const imgPath = `imagens/${v4()}.png`;
-    require("fs").writeFileSync(imgPath, base64Data, 'base64')
-    request.body.img_perfil = imgPath;
-    const createdAluno = await userRepository.createAluno(request.body);
-
-    return response.status(201).json(createdAluno);
+    try{
+        const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
+        const imgPath = `imagens/${v4()}.png`;
+        require("fs").writeFileSync(imgPath, base64Data, 'base64')
+        request.body.img_perfil = imgPath;
+        const createdAluno = await userRepository.createAluno(request.body);
+    
+        return response.status(201).json(createdAluno);
+    } catch (error) {
+        console.error('Erro ao criar o aluno:', error)
+        return response.status(500).json({ message: 'Erro interno no servidor' });
+    };
 };
 
 const createProfessor = async (request, response) => {
-    const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
-    const imgPath = `imagens/${v4()}.png`;
-    require("fs").writeFileSync(imgPath, base64Data, 'base64')
-    request.body.img_perfil = imgPath;
-    const createdProfessor = await userRepository.createProfessor(request.body);
+    try{
+        const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
+        const imgPath = `imagens/${v4()}.png`;
+        require("fs").writeFileSync(imgPath, base64Data, 'base64')
+        request.body.img_perfil = imgPath;
+        const createdProfessor = await userRepository.createProfessor(request.body);
     
-    return response.status(201).json(createdProfessor);
+        return response.status(201).json(createdProfessor);
+    } catch (error) {
+        console.error('Erro ao criar o professor:', error)
+        return response.status(500).json({ message: 'Erro interno no servidor' });
+    }    
 };
 
 const deleteUser = async (request, response) => {
-    const { id } = request.params;
-    await userRepository.deleteUser(id);
-    return response.status(204).json()
+    try{
+        const { id } = request.params;
+        await userRepository.deleteUser(id);
+        return response.status(204).json()
+    } catch (error) {
+        console.error('Erro ao deletar o usuário:', error)
+        return response.status(500).json({ message: 'Erro interno no servidor'});
+    };
 };
 
 const updateUser = async (request, response) => {
-    const { id } = request.params;
-    await userRepository.updateUser(id, request.body);
-    return response.status(204).json();
+    try{
+        const { id } = request.params;
+        await userRepository.updateUser(id, request.body);
+        return response.status(204).json();
+    } catch (error) {
+        console.error('Erro ao atualizar o usuário:', error)
+        return response.status(500).json({ message: 'Erro interno no servidor'})
+    }
 };
 
 module.exports = {
@@ -88,6 +154,8 @@ module.exports = {
     getProfs,
     getOneAluno,
     getOneProf,
+    getAlunoLog,
+    getProfessorLog,
     getImgPerfil,
     createProfessor,
     createAluno,

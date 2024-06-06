@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { Localizacao } = require('../models/localizacaoModel');
 
 const getAll = async () => {
     const [localizacao] = await connection.execute('SELECT * FROM LOCALIZACAO_USUARIO');
