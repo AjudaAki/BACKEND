@@ -1,5 +1,3 @@
-const { response, request } = require("express");
-
 const validateEstado = async (request, response, next) => {
     const { estado } = request.body;
     

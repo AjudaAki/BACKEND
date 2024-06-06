@@ -15,19 +15,21 @@ const createHorario = async(horario) => {
     return {insertId: createdHorario.insertId};
 };
 
-const deleteHorario = async (id_horario) => {
-    const deletedHorario = await connection.execute("DELETE FROM HORARIOS WHERE id_horario = ?", [id_horario]);
+const deleteHorario = async (id_usuario, dia_semana) => {
+    const deletedHorario = await connection.execute("DELETE FROM HORARIOS WHERE id_usuario = ? AND dia_semana = ?", [id_usuario, dia_semana]);
     return deletedHorario;
 };
 
-const updateHorario = async (id_horario, horario) => {
-    const query = "UPDATE HORARIOS SET hora_inicio = ?, hora_fim = ?, dia_semana = ? WHERE id_horario = ?";    
+const updateHorario = async (id_usuario, dia_semana, horario) => {
+    const { hora_inicio, hora_fim } = horario;
 
-    const { hora_inicio, hora_fim, dia_semana } = horario;
+    const query = "UPDATE HORARIOS SET hora_inicio = ?, hora_fim = ? WHERE id_usuario = ? AND dia_semana = ?";
 
-    const updatedHorario = await connection.execute(query, [hora_inicio, hora_fim, dia_semana, id_horario]);
-    return updatedHorario; 
+    const [result] = await connection.execute(query, [hora_inicio, hora_fim, id_usuario, dia_semana]);
+
+    return result; 
 };
+
 
 module.exports = {
     getAll,

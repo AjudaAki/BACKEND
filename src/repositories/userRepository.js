@@ -61,7 +61,6 @@ const getIMG = async (id) => {
     return img;
 };
 
-
 const createProfessor = async(user) => {
     const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil } = user;
 

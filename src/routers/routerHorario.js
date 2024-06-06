@@ -8,13 +8,14 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 //Horários
 router.get('/horarios', usuarioLogadoMiddleware.validateToken, horariosController.getAll);
 router.post('/horarios', 
-    horariosMiddleware.validateUsuario,
+    usuarioLogadoMiddleware.validateToken,
+    horariosMiddleware.validateIdUsuarioFlexible,
     horariosMiddleware.validateHoraInicio,
     horariosMiddleware.validateHoraTermino,
     horariosMiddleware.validateDiaSemana,
     horariosMiddleware.horarioEmUso,
     horariosController.createHorario);
-router.delete('/horarios/:id_horario', usuarioLogadoMiddleware.validateToken, horariosController.deleteHorario);
-router.put('/horarios/:id_horario', usuarioLogadoMiddleware.validateToken, horariosController.updateHorario);
+router.delete('/horarios/:id_usuario/:dia_semana', usuarioLogadoMiddleware.validateToken, horariosMiddleware.validateIdUsuarioFlexible, horariosController.deleteHorario);
+router.put('/horarios', usuarioLogadoMiddleware.validateToken, horariosMiddleware.validateIdUsuarioFlexible, horariosController.updateHorario);
 
 module.exports = router;

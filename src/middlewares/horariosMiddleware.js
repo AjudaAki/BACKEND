@@ -1,16 +1,5 @@
 const connection = require('../repositories/connection');
 
-const validateUsuario = (request, response, next) => {
-    const { body } = request;
-    const idLogado = request.userId; 
-
-    if (isNaN(body.id_usuario) || parseInt(body.id_usuario) !== parseInt(idLogado)) {
-        return response.status(400).json({ message: "Usuário inválido" });
-    }
-
-    next();
-};
-
 const validateHoraInicio = (request, response, next) => {
     const { body } = request;
 
@@ -74,11 +63,31 @@ const validateIdUsuarioParam = (request, response, next) => {
     next();
 };
 
+const validateIdUsuarioFlexible = (request, response, next) => {
+    const idLogado = request.userId;
+    let idUsuario;
+
+    if (request.body.id_usuario) {
+        idUsuario = request.body.id_usuario;
+    } else if (request.params.id_usuario) {
+        idUsuario = request.params.id_usuario;
+    } else {
+        return response.status(400).json({ message: "id_usuario não fornecido" });
+    }
+
+    if (isNaN(idUsuario) || parseInt(idUsuario) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
 module.exports = {
-    validateUsuario,
     validateHoraInicio,
     validateHoraTermino,
     validateDiaSemana,
     horarioEmUso,
-    validateIdUsuarioParam
+    validateIdUsuarioParam,
+    // validateIdUsuario,
+    validateIdUsuarioFlexible
 };

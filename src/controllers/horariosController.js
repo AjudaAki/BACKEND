@@ -22,8 +22,8 @@ const createHorario = async (request, response) => {
 
 const deleteHorario = async (request, response) => {
     try{
-        const { id_horario } = request.params;
-        await horariosRepository.deleteHorario(id_horario);
+        const { id_usuario, dia_semana } = request.params;
+        await horariosRepository.deleteHorario(id_usuario, dia_semana);
         return response.status(204).json();
     } catch (error) {
         console.error('Erro ao deletar o horário:', error)
@@ -32,15 +32,18 @@ const deleteHorario = async (request, response) => {
 };
 
 const updateHorario = async (request, response) => {
-    try{
-        const { id_horario } = request.params;
-        await horariosRepository.updateHorario(id_horario, request.body);
-        return response.status(204).json();
+    try {
+        const { id_usuario, dia_semana, hora_inicio, hora_fim } = request.body;
+        const result = await horariosRepository.updateHorario(id_usuario, dia_semana, { hora_inicio, hora_fim });
+
+        return response.status(204).send();
+
     } catch (error) {
-        console.error('Erro ao atualizar o horário:', error)
-        return response.status(500).json({ message: 'Erro interno no servidor'})
-    };
+        console.error('Erro ao atualizar o horário:', error);
+        return response.status(500).json({ message: 'Erro interno no servidor' });
+    }
 };
+
 
 module.exports = {
     getAll,
