@@ -35,17 +35,19 @@ const getOneProf = async (request, response) => {
 };
 
 const getAlunoLog = async (request, response) => {
-    try{
-        const idLogado = request.userId; 
+    try {
+        const idLogado = request.userId;
 
-        const user = await userRepository.getOneAluno(idLogado);
+        const users = await userRepository.getAlunoLog(idLogado);
 
-        return response.status(200).json(user)
+        return response.status(200).json({ users });
+
     } catch (error) {
         console.error('Erro ao exibir o aluno:', error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
-    };
+    }
 };
+
 
 const getProfessorLog = async (request, response) => {
     try{
