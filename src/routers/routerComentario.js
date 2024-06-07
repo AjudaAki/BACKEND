@@ -7,8 +7,9 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Comentario
 router.get('/comentario', usuarioLogadoMiddleware.validateToken, comentarioController.getAll);
-router.post('/comentario', 
+router.post('/comentario',
     usuarioLogadoMiddleware.validateToken,
+    comentarioMiddleware.validateComentMeuPerfil,
     comentarioMiddleware.validateIdUsuario,
     comentarioMiddleware.validateComentario, 
     comentarioMiddleware.validateCaracter, 

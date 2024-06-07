@@ -2,13 +2,21 @@ const connection = require('../repositories/connection');
 
 const { response, request } = require("express");
 
+const validateComentMeuPerfil = async (request, response, next) => {
+    const {id_usuario,id_perfil} = request.body;
+
+    if (id_usuario === id_perfil) {
+        return response.status(404).json({ message: 'Não é possível comentar no próprio perfil.' });
+    }
+
+    next();
+}
 const validateComentario = async (request, response, next) => {
     const {comentario_usuario} = request.body;
     if (comentario_usuario.length === 0){
         return response.status(404).json({ message: 'O comentário não pode ser vazio'});
     }
     next();
-
 }
 const validateCaracter = async (request, response, next) => {
     const { comentario_usuario } = request.body;
@@ -30,7 +38,8 @@ const validateIdUsuario = (request, response, next) => {
 };
 
 module.exports = {
+    validateComentMeuPerfil,
     validateComentario,
     validateCaracter,
-    validateIdUsuario
+    validateIdUsuario,
 }
