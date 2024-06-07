@@ -40,13 +40,36 @@ const getAlunoLog = async (request, response) => {
 
         const users = await userRepository.getAlunoLog(idLogado);
 
-        return response.status(200).json({ users });
+        if (users.length === 0) {
+            return response.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        const user = users[0]; // Ensure we get the first user
+
+        if (!user.img_perfil) {
+            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
+        }
+
+        const realImgPath = path.join(process.cwd(), user.img_perfil);
+
+        if (!fs.existsSync(realImgPath)) {
+            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
+        }
+
+        const imgBuffer = fs.readFileSync(realImgPath);
+        const imgBase64 = imgBuffer.toString('base64');
+
+        user.img_perfil_base64 = `data:image/png;base64,${imgBase64}`;
+
+        return response.status(200).json(user);
 
     } catch (error) {
         console.error('Erro ao exibir o aluno:', error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
     }
 };
+
+
 
 
 const getProfessorLog = async (request, response) => {

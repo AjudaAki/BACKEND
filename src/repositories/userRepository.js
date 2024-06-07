@@ -30,7 +30,7 @@ const getOneAluno = async (id) => {
 };
 
 const getAlunoLog = async (id) => {
-    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, CAST(modo_professor AS UNSIGNED) AS modo_professor, u.img_perfil, f.usuario_relacionado, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ?", [id]);
+    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, u.img_perfil, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa ", [id]);
 
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
