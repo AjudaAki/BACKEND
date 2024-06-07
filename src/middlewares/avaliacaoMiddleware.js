@@ -11,14 +11,6 @@ const validateAvaliacao = (request, response, next) => {
     next();
 };
 
-const validateIdUsuario = (request, response, next) => {
-    const { body } = request;
-
-    if (parseInt(body.usuario_avaliador) === parseInt(body.professor_avaliado)) {
-        return response.status(400).json({ message: "Não é possível se autoavaliar!" });
-    }
-    next();
-};
 
 const validateAvaliacaoDuplicada = async (request, response, next) => {
     const { body } = request;
@@ -37,9 +29,22 @@ const validateAvaliacaoDuplicada = async (request, response, next) => {
         return response.status(500).json({ message: 'Erro interno do servidor' });
     }
 };
+
+const validateIdUsuario = (request, response, next) => {
+    const { body } = request;
+    const idLogado = request.userId; 
+
+    if (isNaN(body.usuario_avaliador) || parseInt(body.usuario_avaliador) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválido" });
+    }
+
+    next();
+};
+
     
 
 module.exports = {
     validateAvaliacao,
-    validateAvaliacaoDuplicada
+    validateAvaliacaoDuplicada,
+    validateIdUsuario
 }
