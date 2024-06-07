@@ -34,27 +34,17 @@ const getOneProf = async (request, response) => {
     };
 };
 
+
+
 const getAlunoLog = async (request, response) => {
     try {
         const idLogado = request.userId;
 
         const users = await userRepository.getAlunoLog(idLogado);
 
-        if (users.length === 0) {
-            return response.status(404).json({ message: 'Usuário não encontrado' });
-        }
-
-        const user = users[0]; // Ensure we get the first user
-
-        if (!user.img_perfil) {
-            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
-        }
+        const user = users[0]; 
 
         const realImgPath = path.join(process.cwd(), user.img_perfil);
-
-        if (!fs.existsSync(realImgPath)) {
-            return response.status(404).json({ message: 'Imagem de perfil não encontrada' });
-        }
 
         const imgBuffer = fs.readFileSync(realImgPath);
         const imgBase64 = imgBuffer.toString('base64');
