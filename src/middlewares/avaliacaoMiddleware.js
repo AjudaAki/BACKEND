@@ -33,8 +33,8 @@ const validateAvaliacaoDuplicada = async (request, response, next) => {
     next();
     } catch (error) {
     
-        console.error("Erro ao verificar avaliação duplicada:", error);
-        return response.status(500).json({ message: 'Erro interno do servidor' });
+    console.error("Erro ao verificar avaliação duplicada:", error);
+    return response.status(500).json({ message: 'Erro interno do servidor' });
     }
 };
     

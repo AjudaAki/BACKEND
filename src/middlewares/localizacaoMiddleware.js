@@ -1,4 +1,25 @@
 const { response, request } = require("express");
+const connection = require('../repositories/connection');
+
+
+const validateExisteUsuario = async (request, response, next) => {
+    const { id_usuario } = request.body;
+
+    try {
+        const query = "SELECT * FROM LOCALIZACAO_USUARIO WHERE id_usuario = ?";
+        const [rows] = await connection.execute(query, [id_usuario]);
+
+        if (rows.length < 1) {
+            return response.status(400).json({ message: "O usuário não existe :(" });
+        }
+
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar a localização", error);
+        return response.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+    
 
 const validateEstado = async (request, response, next) => {
     const { estado } = request.body;
@@ -19,7 +40,7 @@ const validateEstado = async (request, response, next) => {
 
 const validateCidade = async (request, response, next) => {
     const { cidade } = request.body;
-    
+
     if (typeof cidade !== 'string') {
         return response.status(400).json({ message: 'O campo "cidade" deve ser uma string.' });
     }
@@ -89,12 +110,27 @@ const validateIdUsuarioParam = (request, response, next) => {
     if (isNaN(params.id_usuario) || parseInt(params.id_usuario) !== parseInt(idLogado)) {
         return response.status(400).json({ message: "Usuário inválido" });
     }
-    
-
     next();
 };
 
+const validateDuplicate = async (request, response, next) => {
+    const { id_usuario } = request.body;
 
+    try {
+        const query = "SELECT * FROM LOCALIZACAO_USUARIO WHERE id_usuario = ?";
+        const [rows] = await connection.execute(query, [id_usuario]);
+
+        if (rows.length > 0) {
+            return response.status(400).json({ message: "Você já tem um endereço cadastrado, caso queira altera-lo editar a lozalização, por favor" });
+        }
+
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar a localização", error);
+        return response.status(500).json({ message: "Erro interno do servidor" });
+    }
+
+};
 
 module.exports = {
     validateEstado,
@@ -102,5 +138,7 @@ module.exports = {
     validateBairro,
     validateRua,
     validateNum,
-    validateIdUsuarioParam
+    validateIdUsuarioParam,
+    validateDuplicate,
+    validateExisteUsuario,
 }
