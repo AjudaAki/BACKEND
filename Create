@@ -104,3 +104,68 @@ ALTER TABLE `AVALIACAO_PROFESSOR` ADD CONSTRAINT `AVALIACAO_PROFESSOR_fk1` FOREI
 ALTER TABLE `AVALIACAO_PROFESSOR` ADD CONSTRAINT `AVALIACAO_PROFESSOR_fk2` FOREIGN KEY (`professor_avaliado`) REFERENCES `USUARIOS`(`id`);
 ALTER TABLE `PRECO_PROFESSOR` ADD CONSTRAINT `PRECO_PROFESSOR_fk1` FOREIGN KEY (`id_professor`) REFERENCES `USUARIOS`(`id`);
 ALTER TABLE `CONTATOS` ADD CONSTRAINT `CONTATOS_fk1` FOREIGN KEY (`id_professor`) REFERENCES `USUARIOS`(`id`);
+
+
+CREATE PROCEDURE createProfessor(
+    IN p_nome VARCHAR(255),
+    IN p_email VARCHAR(255),
+    IN p_senha VARCHAR(255),
+    IN p_telefone VARCHAR(14),
+    IN p_cpf VARCHAR(12),
+    IN p_data_nascimento DATE,
+    IN p_descricao VARCHAR(700),
+    IN p_descricao_rapida VARCHAR(150),
+    IN p_img_perfil VARCHAR(255),
+    IN p_modo_professor INT,
+    IN p_discord VARCHAR(500),
+    IN p_whatsapp VARCHAR(500),
+    IN p_teams VARCHAR(500),
+  	IN p_domingo VARCHAR(50),
+  	IN p_segunda VARCHAR(50),
+		IN p_terca VARCHAR(50),
+	  IN p_quarta VARCHAR(50),
+  	IN p_quinta VARCHAR(50),
+ 		IN p_sexta VARCHAR(50),
+ 	  IN p_sabado VARCHAR(50),
+    IN p_preco_minimo DECIMAL(10, 2),
+    IN p_preco_maximo DECIMAL(10, 2),
+    IN p_estado VARCHAR(255),
+    IN p_cidade VARCHAR(255),
+    IN p_bairro VARCHAR(255),
+    IN p_rua VARCHAR(255),
+    IN p_numero_casa INT,
+    IN p_id_tag INT
+)	
+BEGIN
+    DECLARE ultimo_id INT;  
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO USUARIOS (nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, modo_professor)
+    VALUES (p_nome, p_email, p_senha, p_telefone, p_cpf, p_data_nascimento, p_descricao, p_descricao_rapida, p_img_perfil, p_modo_professor);
+
+    SET ultimo_id = LAST_INSERT_ID();
+
+    INSERT INTO CONTATOS (id_professor, discord, whatsapp, teams)
+    VALUES (ultimo_id, p_discord, p_whatsapp, p_teams);
+    
+    INSERT INTO HORARIOS (id_usuario, domingo, segunda, terca, quarta, quinta, sexta, sabado)
+    VALUES (ultimo_id, p_domingo, p_segunda, p_terca, p_quarta, p_quinta, p_sexta, p_sabado);
+    
+    INSERT INTO PRECO_PROFESSOR (id_professor, preco_minimo, preco_maximo)
+    VALUES (ultimo_id, p_preco_minimo, p_preco_maximo);
+
+    INSERT INTO LOCALIZACAO_USUARIO (id_usuario, estado, cidade, bairro, rua, numero_casa)
+    VALUES (ultimo_id, p_estado, p_cidade, p_bairro, p_rua, p_numero_casa);
+
+    INSERT INTO TAGS_PROFESSOR (id_usuario, id_tag)
+    VALUES (ultimo_id, p_id_tag);
+
+    COMMIT;
+END;

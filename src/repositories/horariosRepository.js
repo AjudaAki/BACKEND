@@ -7,25 +7,25 @@ const getAll = async() => {
 };
 
 const createHorario = async(horario) => {
-    const { id_usuario, hora_inicio, hora_fim, dia_semana } = horario;
+    const { id_usuario, domingo, segunda, terca, quarta, quinta, sexta, sabado } = horario;
 
-    const query = "INSERT INTO HORARIOS (id_usuario, hora_inicio, hora_fim, dia_semana) VALUES (?, ?, ?, ?)";
+    const query = "INSERT INTO HORARIOS (id_usuario, domingo, segunda, terca, quarta, quinta, sexta, sabado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    const [createdHorario] = await connection.execute(query, [id_usuario, hora_inicio, hora_fim, dia_semana]);
+    const [createdHorario] = await connection.execute(query, [id_usuario, domingo, segunda, terca, quarta, quinta, sexta, sabado]);
     return {insertId: createdHorario.insertId};
 };
 
-const deleteHorario = async (id_usuario, dia_semana) => {
-    const deletedHorario = await connection.execute("DELETE FROM HORARIOS WHERE id_usuario = ? AND dia_semana = ?", [id_usuario, dia_semana]);
-    return deletedHorario;
-};
+// const deleteHorario = async (id_usuario, dia_semana) => {
+//     const deletedHorario = await connection.execute("DELETE FROM HORARIOS WHERE id_usuario = ? AND dia_semana = ?", [id_usuario, dia_semana]);
+//     return deletedHorario;
+// };
 
-const updateHorario = async (id_usuario, dia_semana, horario) => {
-    const { hora_inicio, hora_fim } = horario;
+const updateHorario = async (id_usuario, horario) => {
+    const { domingo, segunda, terca, quarta, quinta, sexta, sabado } = horario;
 
-    const query = "UPDATE HORARIOS SET hora_inicio = ?, hora_fim = ? WHERE id_usuario = ? AND dia_semana = ?";
+    const query = "UPDATE HORARIOS SET domingo = ?, segunda = ?, terca = ?, quarta = ?, quinta = ?, sexta = ?, sabado = ? WHERE id_usuario = ?";
 
-    const [result] = await connection.execute(query, [hora_inicio, hora_fim, id_usuario, dia_semana]);
+    const [result] = await connection.execute(query, [domingo, segunda, terca, quarta, quinta, sexta, sabado, id_usuario]);
 
     return result; 
 };
@@ -34,6 +34,5 @@ const updateHorario = async (id_usuario, dia_semana, horario) => {
 module.exports = {
     getAll,
     createHorario,
-    deleteHorario,
     updateHorario
 };

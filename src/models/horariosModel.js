@@ -1,10 +1,14 @@
 class Horarios {
-    constructor(id_horario, id_usuario, hora_inicio, hora_fim, dia_semana) {
+    constructor(id_horario, id_usuario, domingo, segunda, terca, quarta, quinta, sexta, sabado) {
       this.id_horario = id_horario;
       this.id_usuario = id_usuario;
-      this.hora_inicio = hora_inicio;
-      this.hora_fim = hora_fim;
-      this.dia_semana = dia_semana;
+      this.domingo = domingo;
+      this.segunda = segunda;
+      this.terca = terca;
+      this.quarta = quarta;
+      this.quinta = quinta;
+      this.sexta = sexta;
+      this.sabado = sabado;
     }
 };
 

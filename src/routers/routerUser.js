@@ -66,7 +66,7 @@ router.put('/users/:id',
     userMiddleware.validateDescricaoRapida,
     userController.updateUser);
 
-router.post('/users/professor/brutalismo', 
+router.post('/users/professor/all', 
     userMiddleware.validateName, 
     userMiddleware.validateEmail, 
     userMiddleware.validatePassword, 
@@ -84,7 +84,7 @@ router.post('/users/professor/brutalismo',
     localizacaoMiddleware.validateRua, 
     localizacaoMiddleware.validateNum,
     tagsProfMiddleware.validateIdTag,
-    userController.createBrutalismo);
+    userController.createProfAll);
 
 //Login
 router.post('/login', autenticarAuth.autenticar);

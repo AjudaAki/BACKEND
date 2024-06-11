@@ -93,7 +93,7 @@ const updateUser = async (id, user) => {
     return updatedUser; 
 };
 
-const createBrutalismo = async(user) => {
+const createProfAll = async(user) => {
     const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, discord, whatsapp, teams, domingo, segunda, terca, quarta, quinta, sexta, sabado, preco_minimo, preco_maximo, estado, cidade, bairro, rua, numero_casa, id_tag} = user;
 
     const query = "CALL createProfessor(?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
@@ -115,5 +115,5 @@ module.exports = {
     createAluno,
     createProfessor,
     updateUser,
-    createBrutalismo
+    createProfAll
 };

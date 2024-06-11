@@ -1,54 +1,36 @@
 const connection = require('../repositories/connection');
 
-const validateHoraInicio = (request, response, next) => {
+const validateFields = (request, response, next) => {
     const { body } = request;
 
-    if (typeof body.hora_inicio !== 'string' || body.hora_inicio.trim() === '') {
-        return response.status(400).json({ message: "É necessário definir um horário de início" });
+    if (typeof body.domingo !== 'string' || body.domingo.trim() === '') {
+        return response.status(400).json({ message: "O campo domingo não pode ser nulo" });
     }
 
-    next();
-};
-
-const validateHoraTermino = (request, response, next) => {
-    const { body } = request;
-
-    if (typeof body.hora_fim !== 'string' || body.hora_fim.trim() === '') {
-        return response.status(400).json({ message: "É necessário definir um horário de término" });
+    if (typeof body.segunda !== 'string' || body.segunda.trim() === '') {
+        return response.status(400).json({ message: "O campo segunda não pode ser nulo" });
     }
 
-    next();
-};
-
-const validateDiaSemana = (request, response, next) => {
-    const { body } = request;
-
-    if (typeof body.dia_semana !== 'string' || body.dia_semana.trim() === '') {
-        return response.status(400).json({ message: "É necessário definir um dia" });
+    if (typeof body.terca !== 'string' || body.terca.trim() === '') {
+        return response.status(400).json({ message: "O campo terça não pode ser nulo" });
     }
 
-    if (body.dia_semana !== 'domingo' && 
-        body.dia_semana !== 'segunda' &&
-        body.dia_semana !== 'terça' && 
-        body.dia_semana !== 'quarta' &&
-        body.dia_semana !== 'quinta' && 
-        body.dia_semana !== 'sexta' &&
-        body.dia_semana !== 'sábado' 
-    ) {
-        return response.status(400).json({ message: "Dia inválido" });
+    if (typeof body.quarta !== 'string' || body.quarta.trim() === '') {
+        return response.status(400).json({ message: "O campo quarta não pode ser nulo" });
     }
 
-    next();
-};
-
-const horarioEmUso = async (request, response, next) => {
-    const { id_usuario, dia_semana } = request.body;
-
-    const [horario] = await connection.execute('SELECT * FROM HORARIOS WHERE id_usuario = ? AND dia_semana = ?', [id_usuario, dia_semana]);
-    if (horario.length > 0) {
-        return response.status(401).json({ message: 'Esse dia já está em uso' });
+    if (typeof body.quinta !== 'string' || body.quinta.trim() === '') {
+        return response.status(400).json({ message: "O campo quinta não pode ser nulo" });
     }
-        
+
+    if (typeof body.sexta !== 'string' || body.sexta.trim() === '') {
+        return response.status(400).json({ message: "O campo sexta não pode ser nulo" });
+    }
+
+    if (typeof body.sabado !== 'string' || body.sabado.trim() === '') {
+        return response.status(400).json({ message: "O campo sábado não pode ser nulo" });
+    }
+
     next();
 };
 
@@ -83,10 +65,7 @@ const validateIdUsuarioFlexible = (request, response, next) => {
 };
 
 module.exports = {
-    validateHoraInicio,
-    validateHoraTermino,
-    validateDiaSemana,
-    horarioEmUso,
+    validateFields,
     validateIdUsuarioParam,
     // validateIdUsuario,
     validateIdUsuarioFlexible

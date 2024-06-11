@@ -170,13 +170,13 @@ const updateUser = async (request, response) => {
     }
 };
 
-const createBrutalismo = async (request, response) => {
+const createProfAll = async (request, response) => {
     try{
         const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
         const imgPath = `imagens/${v4()}.png`;
         require("fs").writeFileSync(imgPath, base64Data, 'base64')
         request.body.img_perfil = imgPath;
-        const createdProfessor = await userRepository.createBrutalismo(request.body);
+        const createdProfessor = await userRepository.createProfAll(request.body);
     
         return response.status(201).json(createdProfessor);
     } catch (error) {
@@ -197,5 +197,5 @@ module.exports = {
     createAluno,
     deleteUser,
     updateUser,
-    createBrutalismo
+    createProfAll
 };
