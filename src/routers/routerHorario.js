@@ -11,10 +11,6 @@ router.post('/horarios',
     usuarioLogadoMiddleware.validateToken,
     horariosMiddleware.validateIdUsuarioFlexible,
     horariosMiddleware.validateFields,
-    // horariosMiddleware.validateHoraInicio,
-    // horariosMiddleware.validateHoraTermino,
-    // horariosMiddleware.validateDiaSemana,
-    // horariosMiddleware.horarioEmUso,
     horariosController.createHorario);
 // router.delete('/horarios/:id_usuario/:dia_semana', usuarioLogadoMiddleware.validateToken, horariosMiddleware.validateIdUsuarioFlexible, horariosController.deleteHorario);
 router.put('/horarios', usuarioLogadoMiddleware.validateToken, horariosMiddleware.validateIdUsuarioFlexible, horariosController.updateHorario);

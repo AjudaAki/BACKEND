@@ -5,14 +5,13 @@ const comentarioController = require('../controllers/comentarioController');
 const comentarioMiddleware = require('../middlewares/comentarioMiddleware');
 const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
-//Comentario
-router.get('/comentario', usuarioLogadoMiddleware.validateToken, comentarioController.getAll);
-router.post('/comentario',
+router.get('/comentario/:id_perfil', usuarioLogadoMiddleware.validateToken, comentarioController.getAll);
+router.post('/comentario/:id_perfil',
     usuarioLogadoMiddleware.validateToken,
     comentarioMiddleware.validateComentMeuPerfil,
     comentarioMiddleware.validateIdUsuario,
     comentarioMiddleware.validateComentario, 
     comentarioMiddleware.validateCaracter, 
-    comentarioController.createComentario, );
+    comentarioController.createComentario);
 
 module.exports = router;

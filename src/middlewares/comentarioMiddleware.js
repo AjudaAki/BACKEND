@@ -3,7 +3,8 @@ const connection = require('../repositories/connection');
 const { response, request } = require("express");
 
 const validateComentMeuPerfil = async (request, response, next) => {
-    const {id_usuario,id_perfil} = request.body;
+    const {id_usuario} = request.body;
+    const {id_perfil} = request.params;
 
     if (id_usuario === id_perfil) {
         return response.status(404).json({ message: 'Não é possível comentar no próprio perfil.' });
