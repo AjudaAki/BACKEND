@@ -8,6 +8,12 @@ const userController = require('../controllers/userController');
 const userMiddleware = require('../middlewares/userMiddleware');
 const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
+const contatosMiddleware = require('../middlewares/contatosMiddleware');
+const horariosMiddleware = require('../middlewares/horariosMiddleware');
+const localizacaoMiddleware = require('../middlewares/localizacaoMiddleware');
+const tagsProfMiddleware = require('../middlewares/tagsProfMiddleware');
+const precoMiddleware = require('../middlewares/precoMiddleware');
+
 //Login
 const autenticarAuth = require('../auth/autenticar');
 
@@ -59,6 +65,26 @@ router.put('/users/:id',
     userMiddleware.validateDescricao,
     userMiddleware.validateDescricaoRapida,
     userController.updateUser);
+
+router.post('/users/professor/brutalismo', 
+    userMiddleware.validateName, 
+    userMiddleware.validateEmail, 
+    userMiddleware.validatePassword, 
+    userMiddleware.validateTelefone,
+    userMiddleware.validateCpf,
+    userMiddleware.validateNascimento,
+    userMiddleware.validateDescricao,
+    userMiddleware.validateDescricaoRapida,
+    contatosMiddleware.validateFieldsLenght,
+    precoMiddleware.validatePrecoMin,
+    precoMiddleware.validatePrecoMax,
+    localizacaoMiddleware.validateEstado, 
+    localizacaoMiddleware.validateCidade, 
+    localizacaoMiddleware.validateBairro, 
+    localizacaoMiddleware.validateRua, 
+    localizacaoMiddleware.validateNum,
+    tagsProfMiddleware.validateIdTag,
+    userController.createBrutalismo);
 
 //Login
 router.post('/login', autenticarAuth.autenticar);

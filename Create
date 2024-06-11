@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `USUARIOS` (
 
 CREATE TABLE IF NOT EXISTS `TAGS` (
 	`id` int AUTO_INCREMENT NOT NULL,
-	`nome_tag` varchar(40) NOT NULL,
+	`nome_tag` enum ("Front End", "Back End", "UI/UX", "Full Stack") NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -27,9 +27,13 @@ CREATE TABLE IF NOT EXISTS `TAGS_PROFESSOR` (
 CREATE TABLE IF NOT EXISTS `HORARIOS` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`id_usuario` int NOT NULL,
-	`hora_inicio` time NOT NULL,
-	`hora_fim` time NOT NULL,
-	`dia_semana` enum ('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado') NOT NULL,
+	`domingo` varchar(255) NOT NULL,
+	`segunda` varchar(255) NOT NULL,
+	`terca` varchar(255) NOT NULL,
+	`quarta` varchar(255) NOT NULL,
+	`quinta` varchar(255) NOT NULL,
+	`sexta` varchar(255) NOT NULL,
+	`sabado` varchar(255) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

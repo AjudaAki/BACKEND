@@ -12,7 +12,7 @@ const getAll = async () => {
 };
 
 const getOneProf = async (id) => {
-    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.hora_inicio, h.hora_fim, h.dia_semana, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE id = ?";
+    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE id = ?";
 
     const [users] = await connection.execute(query, [id]);
     for (const user of users) {
@@ -30,7 +30,7 @@ const getOneAluno = async (id) => {
 };
 
 const getAlunoLog = async (id) => {
-    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, u.img_perfil, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa ", [id]);
+    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, u.img_perfil, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado LEFT JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa ", [id]);
 
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
@@ -39,7 +39,7 @@ const getAlunoLog = async (id) => {
 };
 
 const getProfessorLog = async (id) => {
-    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.hora_inicio, h.hora_fim, h.dia_semana, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ?", [id]);
+    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa, t.id_tag, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, u.img_perfil FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado LEFT JOIN TAGS_PROFESSOR t ON u.id = t.id_usuario WHERE u.id = ? GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa, t.id_tag, u.img_perfil;", [id]);
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
     }
@@ -47,7 +47,7 @@ const getProfessorLog = async (id) => {
 };
 
 const getProfs = async () => {
-    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.hora_inicio, h.hora_fim, h.dia_semana, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario";
+    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario";
 
     const [users] = await connection.execute(query);
     for (const user of users) {
@@ -93,6 +93,17 @@ const updateUser = async (id, user) => {
     return updatedUser; 
 };
 
+const createBrutalismo = async(user) => {
+    const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, discord, whatsapp, teams, domingo, segunda, terca, quarta, quinta, sexta, sabado, preco_minimo, preco_maximo, estado, cidade, bairro, rua, numero_casa, id_tag} = user;
+
+    const query = "CALL createProfessor(?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+
+    const hashedPassword = await encryptPassword(senha);
+
+    const [createdProfessor] = await connection.execute(query, [ nome, email, hashedPassword, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, discord, whatsapp, teams, domingo, segunda, terca, quarta, quinta, sexta, sabado, preco_minimo, preco_maximo, estado, cidade, bairro, rua, numero_casa, id_tag]);
+    return {insertId: createdProfessor.insertId};
+}
+
 module.exports = {
     getAll,
     getProfs,
@@ -103,5 +114,6 @@ module.exports = {
     getIMG,
     createAluno,
     createProfessor,
-    updateUser
+    updateUser,
+    createBrutalismo
 };

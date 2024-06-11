@@ -59,14 +59,20 @@ const getAlunoLog = async (request, response) => {
     }
 };
 
-
-
-
 const getProfessorLog = async (request, response) => {
     try{
         const idLogado = request.userId; 
 
-        const user = await userRepository.getProfessorLog(idLogado);
+        const users = await userRepository.getProfessorLog(idLogado);
+
+        const user = users[0]; 
+
+        const realImgPath = path.join(process.cwd(), user.img_perfil);
+
+        const imgBuffer = fs.readFileSync(realImgPath);
+        const imgBase64 = imgBuffer.toString('base64');
+
+        user.img_perfil_base64 = `data:image/png;base64,${imgBase64}`;
 
         return response.status(200).json(user)
     } catch (error) {
@@ -164,6 +170,21 @@ const updateUser = async (request, response) => {
     }
 };
 
+const createBrutalismo = async (request, response) => {
+    try{
+        const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
+        const imgPath = `imagens/${v4()}.png`;
+        require("fs").writeFileSync(imgPath, base64Data, 'base64')
+        request.body.img_perfil = imgPath;
+        const createdProfessor = await userRepository.createBrutalismo(request.body);
+    
+        return response.status(201).json(createdProfessor);
+    } catch (error) {
+        console.error('Erro ao criar o professor:', error)
+        return response.status(500).json({ message: 'Erro interno no servidor' });
+    }    
+};
+
 module.exports = {
     getAll,
     getProfs,
@@ -175,5 +196,6 @@ module.exports = {
     createProfessor,
     createAluno,
     deleteUser,
-    updateUser
+    updateUser,
+    createBrutalismo
 };
