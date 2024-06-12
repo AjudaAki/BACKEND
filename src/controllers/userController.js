@@ -34,22 +34,11 @@ const getOneProf = async (request, response) => {
     };
 };
 
-
-
 const getAlunoLog = async (request, response) => {
     try {
         const idLogado = request.userId;
-
         const users = await userRepository.getAlunoLog(idLogado);
-
         const user = users[0]; 
-
-        const realImgPath = path.join(process.cwd(), user.img_perfil);
-
-        const imgBuffer = fs.readFileSync(realImgPath);
-        const imgBase64 = imgBuffer.toString('base64');
-
-        user.img_perfil_base64 = `data:image/png;base64,${imgBase64}`;
 
         return response.status(200).json(user);
 
@@ -59,24 +48,23 @@ const getAlunoLog = async (request, response) => {
     }
 };
 
+const getProfessoresCard = async (request, response) => {
+    try {
+        const users = await userRepository.getProfessoresCard();
+        return response.status(200).json(users);
+    } catch (error) {
+        console.error('Erro ao exibir o professor.', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
 const getProfessorLog = async (request, response) => {
     try{
         const idLogado = request.userId; 
-
-        const users = await userRepository.getProfessorLog(idLogado);
-
-        const user = users[0]; 
-
-        const realImgPath = path.join(process.cwd(), user.img_perfil);
-
-        const imgBuffer = fs.readFileSync(realImgPath);
-        const imgBase64 = imgBuffer.toString('base64');
-
-        user.img_perfil_base64 = `data:image/png;base64,${imgBase64}`;
-
+        const user = await userRepository.getOneProf(idLogado);
         return response.status(200).json(user)
     } catch (error) {
-        console.error('Erro ao exibir o aluno:', error);
+        console.error('Erro ao exibir o professor:', error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
     };
 };
@@ -197,5 +185,6 @@ module.exports = {
     createAluno,
     deleteUser,
     updateUser,
-    createProfAll
+    createProfAll,
+    getProfessoresCard
 };
