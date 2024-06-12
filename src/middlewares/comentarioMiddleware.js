@@ -38,9 +38,21 @@ const validateIdUsuario = (request, response, next) => {
     next();
 };
 
+const usuarioExiste = async (request, response, next) => {
+    const { id_perfil } = request.params;
+
+    const [usuario] = await connection.execute('SELECT * FROM USUARIOS WHERE id = ?', [id_perfil]);
+    if (usuario.length == 0) {
+        return response.status(401).json({ message: 'Esse professor não existe' });
+    }
+        
+    next();
+};
+
 module.exports = {
     validateComentMeuPerfil,
     validateComentario,
     validateCaracter,
     validateIdUsuario,
+    usuarioExiste
 }

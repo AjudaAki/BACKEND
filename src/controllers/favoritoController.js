@@ -11,14 +11,20 @@ const getAll = async (request, response) => {
 };
 
 const createFavorito = async (request, response) => {
-    try{
-        const { usuario_logado, usuario_relacionado } = request.body;
+    try {
+        const usuario_logado = request.userId;
+        const { usuario_relacionado } = request.body;
+
+        if (!usuario_relacionado) {
+            return response.status(400).json({ message: 'Usuário relacionado é obrigatório' });
+        }
+
         const createdFavorito = await favoritoRepository.createFavorito(usuario_logado, usuario_relacionado);
         return response.status(201).json(createdFavorito);
     } catch (error) {
-        console.error('Erro ao adicionar aos favoritos:', error)
-        return response.status(500).json({ message: 'Erro interno no servidor'})
-    };
+        console.error('Erro ao adicionar aos favoritos:', error);
+        return response.status(500).json({ message: 'Erro interno no servidor' });
+    }
 };
 
 const deleteFavorito = async (request, response) => {

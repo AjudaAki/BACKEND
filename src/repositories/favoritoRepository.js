@@ -8,8 +8,8 @@ const getAll = async () => {
 
 const createFavorito = async (usuario_logado, usuario_relacionado) => {
     const query = "INSERT INTO FAVORITOS (usuario_logado, usuario_relacionado) VALUES (?, ?)";
-    const [createdFavorito] = await connection.execute(query, [usuario_logado, usuario_relacionado]);
-    return { message: 'Favorito criado com sucesso!'}
+    await connection.execute(query, [usuario_logado, usuario_relacionado]);
+    return { message: 'Favorito criado com sucesso!' };
 };
 
 const deleteFavorito = async (FAVORITOS) => {

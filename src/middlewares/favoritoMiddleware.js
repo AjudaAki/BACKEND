@@ -2,11 +2,22 @@ const connection = require('../repositories/connection');
 
 const validateFavorito = async (request, response, next) => {
     try {
-        const { usuario_logado, usuario_relacionado } = request.body;
-        const [favorito] = await connection.execute('SELECT * FROM FAVORITOS WHERE usuario_logado = ? AND usuario_relacionado = ?', [usuario_logado, usuario_relacionado]);
-        if (favorito.length !== 0) {
-            return response.status(404).json({ message: 'Esse favorito já existe' });
+        const { usuario_relacionado } = request.body;
+        const usuario_logado = request.userId;
+
+        if (!usuario_logado || !usuario_relacionado) {
+            return response.status(400).json({ message: 'Parâmetros inválidos' });
         }
+
+        const [favorito] = await connection.execute(
+            'SELECT * FROM FAVORITOS WHERE usuario_logado = ? AND usuario_relacionado = ?',
+            [usuario_logado, usuario_relacionado]
+        );
+
+        if (favorito.length !== 0) {
+            return response.status(409).json({ message: 'Esse favorito já existe' });
+        }
+
         next();
     } catch (error) {
         console.error("Erro ao validar favorito:", error);
@@ -14,31 +25,30 @@ const validateFavorito = async (request, response, next) => {
     }
 };
 
-const validateIdUsuario = (request, response, next) => {
-    const { body } = request;
-    const idLogado = request.userId; 
+const validateIdUsuarioParam = (request, response, next) => {
+    const idLogado = request.userId;
+    const { usuario_logado } = request.params;
 
-    if (typeof body.usuario_logado !== 'number' || isNaN(body.usuario_logado) || body.usuario_logado !== idLogado) {
-        return response.status(400).json({ message: "Usuário inválido" });
+    if (isNaN(usuario_logado) || parseInt(usuario_logado) !== parseInt(idLogado)) {
+        return response.status(400).json({ message: "Usuário inválidooo" });
     }
 
     next();
 };
 
-const validateIdUsuarioParam = (request, response, next) => {
-    const { params } = request;
-    const idLogado = request.userId; 
+const usuarioExiste = async (request, response, next) => {
+    const { usuario_relacionado } = request.body;
 
-    if (isNaN(params.usuario_logado) || parseInt(params.usuario_logado) !== parseInt(idLogado)) {
-        return response.status(400).json({ message: "Usuário inválido" });
+    const [usuario] = await connection.execute('SELECT * FROM USUARIOS WHERE id = ?', [usuario_relacionado]);
+    if (usuario.length == 0) {
+        return response.status(401).json({ message: 'Esse professor não existe' });
     }
-
+        
     next();
 };
 
 module.exports = {
     validateFavorito,
-    validateIdUsuario,
-    validateIdUsuarioParam
-}
-
+    validateIdUsuarioParam,
+    usuarioExiste
+};

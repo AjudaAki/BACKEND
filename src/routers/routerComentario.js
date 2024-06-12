@@ -10,6 +10,7 @@ router.post('/comentario/:id_perfil',
     usuarioLogadoMiddleware.validateToken,
     comentarioMiddleware.validateComentMeuPerfil,
     comentarioMiddleware.validateIdUsuario,
+    comentarioMiddleware.usuarioExiste,
     comentarioMiddleware.validateComentario, 
     comentarioMiddleware.validateCaracter, 
     comentarioController.createComentario);

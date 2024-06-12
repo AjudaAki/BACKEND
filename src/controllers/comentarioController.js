@@ -26,5 +26,5 @@ const createComentario = async (request, response) => {
 
 module.exports = {
     getAll,
-    createComentario,
+    createComentario
 };
