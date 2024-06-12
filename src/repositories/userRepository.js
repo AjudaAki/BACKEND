@@ -12,13 +12,13 @@ const getAll = async () => {
 };
 
 const getOneProf = async (id) => {
-    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ?";
+    const query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, u.modo_professor, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa";
 
     const [users] = await connection.execute(query, [id]);
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
-      }
-    return users;
+    }
+    return users[0];
 };
 
 const getOneAluno = async (id) => {
@@ -30,7 +30,10 @@ const getOneAluno = async (id) => {
 };
 
 const getAlunoLog = async (id) => {
-    const [users] = await connection.execute("SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, u.img_perfil, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado LEFT JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa ", [id]);
+    const [users] = await connection.execute(
+        `SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado LEFT JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, u.modo_professor, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa`, 
+        [id]
+    );
 
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
@@ -38,13 +41,14 @@ const getAlunoLog = async (id) => {
     return users;
 };
 
+
 const getProfs = async () => {
-    query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario";
+    const query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, u.modo_professor, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa";
 
     const [users] = await connection.execute(query);
     for (const user of users) {
         user.data_nascimento_formatada = moment(user.data_nascimento).format('DD/MM/YYYY');
-      }
+    }
     return users;
 };
 
