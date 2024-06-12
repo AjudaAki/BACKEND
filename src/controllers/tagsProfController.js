@@ -17,7 +17,7 @@ const createTagProf = async (request, response) => {
     } catch (error) {
         console.error('Erro ao criar tag para o professor:', error);
         return response.status(500).json({ message: 'Erro interno do servidor' });
-    };
+    }
 };
 
 const deleteTagProf = async (request, response) => {

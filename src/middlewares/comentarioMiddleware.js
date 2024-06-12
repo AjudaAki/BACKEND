@@ -2,6 +2,24 @@ const connection = require('../repositories/connection');
 
 const { response, request } = require("express");
 
+const validateExisteUsuario = async (request, response, next) => {
+    const { id_perfil } = request.body;
+
+    try {
+        const query = "SELECT * FROM USUARIOS WHERE id = ?";
+        const [rows] = await connection.execute(query, [id_perfil]);
+
+        if (rows.length < 1) {
+            return response.status(400).json({ message: "O usuário não existe" });
+        }
+
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar o comentário", error);
+        return response.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
 const validateComentMeuPerfil = async (request, response, next) => {
     const {id_usuario,id_perfil} = request.body;
 
@@ -27,19 +45,19 @@ const validateCaracter = async (request, response, next) => {
 }
 
 const validateIdUsuario = (request, response, next) => {
-    const { body } = request;
-    const idLogado = request.userId; 
+    const { id_usuario, id_perfil } = request.body;
 
-    if (isNaN(body.id_usuario) || parseInt(body.id_usuario) !== parseInt(idLogado)) {
-        return response.status(400).json({ message: "Usuário inválido" });
+    if (isNaN(id_usuario) || isNaN(id_perfil)) {
+        return response.status(400).json({ message: "IDs devem ser números" });
     }
 
     next();
 };
-
 module.exports = {
+    validateExisteUsuario,
     validateComentMeuPerfil,
     validateComentario,
     validateCaracter,
     validateIdUsuario,
+    
 }

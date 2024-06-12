@@ -7,12 +7,14 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Comentario
 router.get('/comentario', usuarioLogadoMiddleware.validateToken, comentarioController.getAll);
+router.get('/comentario/Comentarios/:id_prof', comentarioController.getComentarioNoPerfil)
 router.post('/comentario',
     usuarioLogadoMiddleware.validateToken,
+    comentarioMiddleware.validateExisteUsuario,
     comentarioMiddleware.validateComentMeuPerfil,
     comentarioMiddleware.validateIdUsuario,
     comentarioMiddleware.validateComentario, 
     comentarioMiddleware.validateCaracter, 
     comentarioController.createComentario, );
-
+    
 module.exports = router;

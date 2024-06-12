@@ -12,9 +12,15 @@ const createComentario = async (id_usuario, id_perfil, comentario_usuario) => {
     return { message: 'Comentário criado com sucesso.' };
 };
 
+const getComentarioNoPerfil = async (profileId) => {
+    const query = `SELECT c.id, c.id_usuario, c.id_perfil, c.comentario_usuario, u.nome AS nome_usuario FROM COMENTARIOS c INNER JOIN USUARIOS u ON c.id_usuario = u.id WHERE c.id_perfil = ?;`;
+    const [comentario] = await connection.execute(query, [profileId]);
+    return comentario;
+};
 
 module.exports = {
     getAll,
     createComentario,
+    getComentarioNoPerfil
 }
 

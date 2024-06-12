@@ -7,7 +7,7 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Favorito
 router.get('/favorito', usuarioLogadoMiddleware.validateToken, favoritoController.getAll);
-router.post('/favorito', usuarioLogadoMiddleware.validateToken, favoritoMiddleware.validateIdUsuario, favoritoMiddleware.validateFavorito,favoritoController.createFavorito);
+router.post('/favorito', usuarioLogadoMiddleware.validateToken, favoritoMiddleware.validateIdUsuario, favoritoMiddleware.validateFavorito, favoritoMiddleware.validateExisteUsuario,favoritoController.createFavorito);
 router.delete('/favorito/:usuario_logado/:usuario_relacionado', usuarioLogadoMiddleware.validateToken, favoritoMiddleware.validateIdUsuarioParam,    favoritoController.deleteFavorito);
 
 

@@ -21,7 +21,21 @@ const createComentario = async (request, response) => {
     };
 };
 
+const getComentarioNoPerfil = async (request, response) => {
+    try {
+        const { comentario_usuario } = request.params;
+        const comentarios = await getComentariosNoPerfil(profileId);
+        if (comentarios.length === 0) {
+            return response.status(404).json({ message: 'Nenhum comentário encontrado para este perfil.' });
+        }
+        return response.status(200).json(comentarios);
+    } catch (error) {
+        console.error('Erro ao exibir os comentários:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
 module.exports = {
     getAll,
     createComentario,
+    getComentarioNoPerfil
 };

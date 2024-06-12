@@ -149,6 +149,27 @@ const updateUser = async (request, response) => {
     }
 };
 
+const getProfessores = async (request, response) => {
+    try{
+        const users = await userRepository.getProfessores();
+        return response.status(200).json(users)
+    }catch(error){
+        console.error('Erro ao exibir o professor.:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
+const getSelecionarProf = async (request, response) => {
+    try {
+        const { id_prof } = request.params; 
+        const user = await userRepository.getSelecionarProf(id_prof); 
+        return response.status(200).json(user);
+    } catch (error) {
+        console.error('Erro ao exibir o professor:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
 module.exports = {
     getAll,
     getProfs,
@@ -160,5 +181,7 @@ module.exports = {
     createProfessor,
     createAluno,
     deleteUser,
-    updateUser
+    updateUser,
+    getProfessores,
+    getSelecionarProf // Função modificada para aceitar um parâmetro adicional
 };
