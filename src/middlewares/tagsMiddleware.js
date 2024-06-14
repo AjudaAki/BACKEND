@@ -1,11 +1,23 @@
 const connection = require('../repositories/connection');
 
+
+
 const validateNomeTag = (request, response, next) => {
     const { nome_tag } = request.body;
 
     if (typeof nome_tag !== 'string' || nome_tag.trim() === '') {
         return response.status(400).json({ message: "É necessário definir um nome para a tag" });
     }
+    
+    if (nome_tag !== 'Front End' &&
+        nome_tag !== 'Back End' &&
+        nome_tag !== 'UX/UI' &&
+        nome_tag !== 'Full Stack'
+    ) {
+        return response.status(400).json({ message: "Tag inválida" });
+    }
+
+    next();
 
     next();
 };

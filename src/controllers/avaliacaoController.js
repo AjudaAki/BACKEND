@@ -12,7 +12,9 @@ const getAll = async (request, response) => {
 
 const createAvaliacao = async (request, response) => {
     try{
-        const { usuario_avaliador, professor_avaliado, nota } = request.body;
+        const { professor_avaliado, nota } = request.body;
+        const usuario_avaliador = request.userId;
+
         const createdAvaliacao = await avaliacaoRepository.createAvaliacao(usuario_avaliador, professor_avaliado, nota);
         return response.status(201).json(createdAvaliacao);
     } catch (error) {

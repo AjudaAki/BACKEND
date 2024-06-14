@@ -95,6 +95,43 @@ const updateUser = async (id, user) => {
     return updatedUser; 
 };
 
+
+const getProfessores = async () => {
+    const query = `SELECT u.id, u.nome, u.descricao_rapida,u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, t.nome_tag FROM USUARIOS u INNER JOIN TAGS_PROFESSOR tp ON u.id = tp.id_usuario INNER JOIN TAGS t ON tp.id_tag = t.id WHERE u.modo_professor = 1`;
+    const [users] = await connection.execute(query);
+    return users;
+};
+
+const getSelecionarProf = async (professorId) => {
+    const query = `
+        SELECT 
+            u.id,
+            u.nome,
+            u.descricao_rapida,
+            u.img_perfil,
+            t.nome_tag,
+            pp.preco_maximo,
+            pp.preco_minimo,
+            c.discord,
+            c.whatsapp,
+            c.teams
+        FROM 
+            USUARIOS u
+        INNER JOIN 
+            TAGS_PROFESSOR tp ON u.id = tp.id_usuario
+        INNER JOIN 
+            TAGS t ON tp.id_tag = t.id
+        LEFT JOIN 
+            PRECO_PROFESSOR pp ON u.id = pp.id_professor
+        LEFT JOIN 
+            CONTATOS c ON u.id = c.id_professor
+        WHERE 
+            u.modo_professor = 1 AND
+            u.id = ?`;
+    const [users] = await connection.execute(query, [professorId]);
+    return users[0]; 
+};
+
 const createProfAll = async(user) => {
     const { nome, email, senha, telefone, cpf, data_nascimento, descricao, descricao_rapida, img_perfil, discord, whatsapp, teams, domingo, segunda, terca, quarta, quinta, sexta, sabado, preco_minimo, preco_maximo, estado, cidade, bairro, rua, numero_casa, id_tag} = user;
 
@@ -106,6 +143,7 @@ const createProfAll = async(user) => {
     return {insertId: createdProfessor.insertId};
 }
 
+
 module.exports = {
     getAll,
     getProfs,
@@ -116,6 +154,8 @@ module.exports = {
     createAluno,
     createProfessor,
     updateUser,
-    createProfAll,
-    getProfessoresCard
+    getProfessores,
+    getSelecionarProf,
+    getProfessoresCard,
+    createProfAll
 };

@@ -158,6 +158,27 @@ const updateUser = async (request, response) => {
     }
 };
 
+const getProfessores = async (request, response) => {
+    try{
+        const users = await userRepository.getProfessores();
+        return response.status(200).json(users)
+    }catch(error){
+        console.error('Erro ao exibir o professor.:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
+const getSelecionarProf = async (request, response) => {
+    try {
+        const { id_prof } = request.params; 
+        const user = await userRepository.getSelecionarProf(id_prof); 
+        return response.status(200).json(user);
+    } catch (error) {
+        console.error('Erro ao exibir o professor:', error);
+        return response.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
 const createProfAll = async (request, response) => {
     try{
         const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
@@ -170,7 +191,7 @@ const createProfAll = async (request, response) => {
     } catch (error) {
         console.error('Erro ao criar o professor:', error)
         return response.status(500).json({ message: 'Erro interno no servidor' });
-    }    
+    }
 };
 
 module.exports = {
@@ -185,6 +206,8 @@ module.exports = {
     createAluno,
     deleteUser,
     updateUser,
+    getProfessores,
+    getSelecionarProf,
     createProfAll,
     getProfessoresCard
 };

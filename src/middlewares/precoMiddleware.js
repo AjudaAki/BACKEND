@@ -2,20 +2,6 @@ const connection = require('../repositories/connection');
 
 const { response } = require("express");
 
-const validateExiste = async (request, response, next) =>{
-    try {
-        const { id_professor } = request.params;
-        const [existe] = await connection.execute('SELECT * FROM USUARIOS WHERE id = ?', [id_professor]);
-        if (existe.length == 0){
-            return response.status(404).json({ message: 'Esse professor não existe'});            
-        }
-        next();
-    } catch (error) {
-        console.error("Erro em relação ao usuário.", error);
-        return response.status(500).json({ message: 'Erro interno no servidor' })
-
-    }
-};
 
 const validatePrecoMin = (request, response, next) => {
     const { preco_minimo } = request.body; 
@@ -52,15 +38,9 @@ const validateIdUsuarioParam = (request, response, next) => {
     next();
 };
 
-/**
- * -middleware para o professor não atribuir dois preços a ele ok
-    -middleware para o professor não atribuir duas localizações a ele ok 
-    -put de atualização de localização bugado, mesmo quando passo um id de um professor que não existe ele retorna uma mensagem de sucesso
-    -um usuário não pode comentar no próprio perfil
-    -um usuário pode avaliar se passando por outro usuário
- */
+
 const validateDoisPrecoNao = async (request, response, next) => {
-    const { id_professor } = request.body;
+    const { id_professor } = request.params;
     try {
         const query = "SELECT * FROM PRECO_PROFESSOR WHERE id_professor = ?";
         const [rows] = await connection.execute(query, [id_professor]);
@@ -76,12 +56,8 @@ const validateDoisPrecoNao = async (request, response, next) => {
 };
 
 module.exports = {
-    validateExiste,
     validateIdUsuarioParam,
     validatePrecoMin,
     validatePrecoMax,
     validateDoisPrecoNao,
 };
-
-
-

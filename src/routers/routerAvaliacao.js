@@ -7,6 +7,6 @@ const usuarioLogadoMiddleware = require('../auth/usuarioLogadoMiddleware');
 
 //Avaliação
 router.get('/avaliacao', usuarioLogadoMiddleware.validateToken, avaliacaoController.getAll);
-router.post('/avaliacao', usuarioLogadoMiddleware.validateToken, avaliacaoMiddleware.validateAvaliacao, avaliacaoMiddleware.validateAvaliacaoDuplicada, avaliacaoController.createAvaliacao);
+router.post('/avaliacao', usuarioLogadoMiddleware.validateToken, avaliacaoMiddleware.validateAvaliacao, avaliacaoMiddleware.validateAvaliacaoDuplicada,avaliacaoMiddleware.validateExisteUsuario, avaliacaoController.createAvaliacao);
 
 module.exports = router;

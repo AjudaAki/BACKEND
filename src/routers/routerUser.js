@@ -32,8 +32,9 @@ router.get('/users/aluno/:id', usuarioLogadoMiddleware.validateToken, userContro
 
 router.get('/users/img/:id', userController.getImgPerfil);
 
-router.get('/users/professores/card',usuarioLogadoMiddleware.validateToken, userController.getProfessoresCard);
+router.get('/users/professores/card', usuarioLogadoMiddleware.validateToken, userController.getProfessoresCard);
 
+router.get('/users/professor/:id_prof', usuarioLogadoMiddleware.validateToken, userController.getSelecionarProf)
 router.post('/users/professor', 
     userMiddleware.validateName, 
     userMiddleware.validateEmail, 

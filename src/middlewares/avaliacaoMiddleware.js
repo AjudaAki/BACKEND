@@ -1,5 +1,22 @@
 const connection = require("../repositories/connection");
 
+const validateExisteUsuario = async (request, response, next) => {
+    const { professor_avaliado } = request.body;
+
+    try {
+        const query = "SELECT * FROM USUARIOS WHERE id = ?";
+        const [rows] = await connection.execute(query, [professor_avaliado]);
+
+        if (rows.length < 1) {
+            return response.status(400).json({ message: "O usuário não existe" });
+        }
+        next();
+    } catch (error) {
+        console.error("Erro ao verificar a avaliação", error);
+        return response.status(500).json({ message: "Erro interno do servidor" });
+    }
+}
+
 const validateAvaliacao = (request, response, next) => {
     const { nota } = request.body;
     const notaNumber = parseFloat(nota);
@@ -22,7 +39,9 @@ const validateIdUsuario = (request, response, next) => {
 
 const validateAvaliacaoDuplicada = async (request, response, next) => {
     const { body } = request;
-    const { usuario_avaliador, professor_avaliado } = body; 
+    const { professor_avaliado } = body; 
+    const usuario_avaliador = request.userId;
+
     try {
         const query = "SELECT * FROM AVALIACAO_PROFESSOR WHERE usuario_avaliador = ? AND professor_avaliado = ?";
         const [rows] = await connection.execute(query, [usuario_avaliador, professor_avaliado]);
@@ -40,6 +59,8 @@ const validateAvaliacaoDuplicada = async (request, response, next) => {
     
 
 module.exports = {
+    validateExisteUsuario,
     validateAvaliacao,
-    validateAvaliacaoDuplicada
+    validateAvaliacaoDuplicada,
+    
 }

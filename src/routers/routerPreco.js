@@ -20,9 +20,7 @@ router.post('/preco',
 
 router.put('/preco/:id_professor', 
     usuarioLogadoMiddleware.validateToken,
-    precoMiddleware.validateExiste, 
     precoMiddleware.validateIdUsuarioParam,
-    precoMiddleware.validateDoisPrecoNao, 
     precoMiddleware.validatePrecoMin, 
     precoMiddleware.validatePrecoMax,
     precoController.updatePreco
