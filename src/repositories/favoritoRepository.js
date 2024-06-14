@@ -2,8 +2,37 @@ const connection = require('./connection');
 const { Favoritos } = require('../models/favoritoModel');
 
 const getAll = async (usuario_logado) => {
-    const [favorito] = await connection.execute('SELECT * FROM FAVORITOS WHERE usuario_logado = ?', [usuario_logado]);
-    return favorito;
+    const query = `
+    SELECT 
+        u.id, 
+        u.nome, 
+        u.descricao_rapida, 
+        u.img_perfil, 
+        CAST(u.modo_professor AS UNSIGNED) AS modo_professor, 
+        t.nome_tag 
+    FROM 
+        USUARIOS u 
+    INNER JOIN 
+        TAGS_PROFESSOR tp 
+    ON 
+        u.id = tp.id_usuario 
+    INNER JOIN 
+        TAGS t 
+    ON 
+        tp.id_tag = t.id 
+    INNER JOIN 
+        FAVORITOS f 
+    ON 
+        u.id = f.usuario_relacionado 
+    WHERE 
+        u.modo_professor = 1 
+    AND 
+        f.usuario_logado = ?
+`;
+
+const [result] = await connection.execute(query, [usuario_logado]);
+return result;
+
 };
 
 const createFavorito = async (usuario_logado, usuario_relacionado) => {
