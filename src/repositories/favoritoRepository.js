@@ -1,8 +1,8 @@
 const connection = require('./connection');
 const { Favoritos } = require('../models/favoritoModel');
 
-const getAll = async () => {
-    const [favorito] = await connection.execute('SELECT * FROM FAVORITOS');
+const getAll = async (usuario_logado) => {
+    const [favorito] = await connection.execute('SELECT * FROM FAVORITOS WHERE usuario_logado = ?', [usuario_logado]);
     return favorito;
 };
 

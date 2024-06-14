@@ -2,7 +2,8 @@ const favoritoRepository = require('../repositories/favoritoRepository')
 
 const getAll = async (request, response) => {
     try{
-        const favoritos = await favoritoRepository.getAll();
+        const usuario_logado = request.userId;
+        const favoritos = await favoritoRepository.getAll(usuario_logado);
         return response.status(200).json(favoritos);
     } catch (error) {
         console.error('Erro ao exibir os favoritos:', error)
