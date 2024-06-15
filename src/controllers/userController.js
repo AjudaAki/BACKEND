@@ -107,19 +107,24 @@ const getImgPerfil = async (request, response) => {
 };
 
 const createAluno = async (request, response) => {
-    try{
+    try {
+        const baseUrl = 'http://localhost:3333/';  // URL base da sua API
         const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
         const imgPath = `imagens/${v4()}.png`;
         require("fs").writeFileSync(imgPath, base64Data, 'base64')
-        request.body.img_perfil = imgPath;
+        
+        // Construa a URL completa da imagem
+        request.body.img_perfil = `${baseUrl}${imgPath}`;
+        
         const createdAluno = await userRepository.createAluno(request.body);
     
         return response.status(201).json(createdAluno);
     } catch (error) {
         console.error('Erro ao criar o aluno:', error)
         return response.status(500).json({ message: 'Erro interno no servidor' });
-    };
+    }
 };
+
 
 const createProfessor = async (request, response) => {
     try{
@@ -180,16 +185,19 @@ const getSelecionarProf = async (request, response) => {
 };
 
 const createProfAll = async (request, response) => {
-    try{
+    try {
+        const baseUrl = 'http://localhost:3333/';  // URL base da sua API
         const base64Data = request.body.img_perfil.replace(/^data:image\/png;base64,/, "");
         const imgPath = `imagens/${v4()}.png`;
-        require("fs").writeFileSync(imgPath, base64Data, 'base64')
-        request.body.img_perfil = imgPath;
+        fs.writeFileSync(imgPath, base64Data, 'base64');
+        
+        request.body.img_perfil = `${baseUrl}${imgPath}`;
+        
         const createdProfessor = await userRepository.createProfAll(request.body);
     
         return response.status(201).json(createdProfessor);
     } catch (error) {
-        console.error('Erro ao criar o professor:', error)
+        console.error('Erro ao criar o professor:', error);
         return response.status(500).json({ message: 'Erro interno no servidor' });
     }
 };
