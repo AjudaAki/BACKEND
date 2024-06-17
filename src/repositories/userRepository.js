@@ -12,7 +12,7 @@ const getAll = async () => {
 };
 
 const getOneProf = async (id) => {
-    const query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, u.modo_professor, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa";
+    const query = "SELECT u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, CAST(u.modo_professor AS UNSIGNED) AS modo_professor, t.nome_tag, COUNT(DISTINCT f.usuario_relacionado) AS favoritos, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa FROM USUARIOS u INNER JOIN CONTATOS c ON u.id = c.id_professor INNER JOIN HORARIOS h ON u.id = h.id_usuario INNER JOIN TAGS_PROFESSOR tp ON u.id = tp.id_usuario INNER JOIN TAGS t ON tp.id_tag = t.id INNER JOIN PRECO_PROFESSOR p ON u.id = p.id_professor LEFT JOIN FAVORITOS f ON u.id = f.usuario_logado INNER JOIN LOCALIZACAO_USUARIO l ON u.id = l.id_usuario WHERE u.id = ? GROUP BY u.id, u.nome, u.email, u.senha, u.telefone, u.cpf, u.data_nascimento, u.descricao, u.descricao_rapida, u.img_perfil, u.modo_professor, t.nome_tag, c.discord, c.whatsapp, c.teams, h.domingo, h.segunda, h.terca, h.quarta, h.quinta, h.sexta, h.sabado, p.preco_minimo, p.preco_maximo, l.estado, l.cidade, l.bairro, l.rua, l.numero_casa";
 
     const [users] = await connection.execute(query, [id]);
     for (const user of users) {
@@ -117,10 +117,10 @@ const getSelecionarProf = async (professorId) => {
             c.teams
         FROM 
             USUARIOS u
-        INNER JOIN 
-            TAGS_PROFESSOR tp ON u.id = tp.id_usuario
-        INNER JOIN 
-            TAGS t ON tp.id_tag = t.id
+            INNER JOIN 
+                TAGS_PROFESSOR tp ON u.id = tp.id_usuario
+            INNER JOIN 
+                TAGS t ON tp.id_tag = t.id
         LEFT JOIN 
             PRECO_PROFESSOR pp ON u.id = pp.id_professor
         LEFT JOIN 
